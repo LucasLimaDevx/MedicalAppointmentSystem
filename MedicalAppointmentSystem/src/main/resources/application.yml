@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: MedicalAppointmentSystem
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/medical_appointment_system?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: devilwardead12
+
+  jpa:
+    hibernate:
+       ddl-auto: update
+    properties:
+        hibernate:
+    show-sql: false
+    open-in-view: false
