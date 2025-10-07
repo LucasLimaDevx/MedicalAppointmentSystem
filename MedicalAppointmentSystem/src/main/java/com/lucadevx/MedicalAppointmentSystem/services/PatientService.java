@@ -1,5 +1,7 @@
 package com.lucadevx.MedicalAppointmentSystem.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,8 @@ public class PatientService {
 		return repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Object not found"));
 	}
 	
+	public List<Patient> findAll(){
+		return repository.findAll();
+	}
 
 }
