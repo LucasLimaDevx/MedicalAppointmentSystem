@@ -1,7 +1,6 @@
 package com.lucadevx.MedicalAppointmentSystem.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,6 +18,9 @@ public class Patient implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	
+
+	
 	@Column(name = "first_name", nullable = false, length = 100)
 	private String firstName;
 	
@@ -32,9 +34,12 @@ public class Patient implements Serializable{
 	private String email;
 	
 	@Column(name = "birth_date", nullable = false)
-	private LocalDate birthDate;
+	private String birthDate;
 	
-	public Patient(Long id, String firstName, String lastName, String phone, String email, LocalDate birthDate) {
+	public Patient() {
+	}
+	
+	public Patient(Long id, String firstName, String lastName, String phone, String email, String birthDate) {
 		
 		this.id = id;
 		this.firstName = firstName;
@@ -84,11 +89,11 @@ public class Patient implements Serializable{
 		this.email = email;
 	}
 
-	public LocalDate getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 	

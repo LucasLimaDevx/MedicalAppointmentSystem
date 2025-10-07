@@ -35,10 +35,12 @@ public class Doctor implements Serializable{
 	
 	@Column(name = "specialty", nullable = false, length = 50)
 	private String specialty;
+	
+	public Doctor() {
+	}
 
-	public Doctor(Long id, String firstName, String lastName, String phone, String email, String crm,
-			String specialty) {
-		super();
+	public Doctor(Long id, String firstName, String lastName, String phone, String email, String crm, String specialty) {
+
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;

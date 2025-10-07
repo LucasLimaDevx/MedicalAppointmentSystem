@@ -1,7 +1,6 @@
 package com.lucadevx.MedicalAppointmentSystem.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="TB_PATIENT")
+@Table(name="TB_APPOINTMENT")
 public class Appointment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -19,32 +18,36 @@ public class Appointment implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "appointment_date_time", nullable = false, length = 10)
-	private LocalDateTime appointmentDateTime;
 	
-	@Column(name = "status_appointment", nullable = false)
+	@Column(name = "appointment_date_time", nullable = true, length = 10)
+	private String appointmentDateTime;
+	
+	@Column(name = "status_appointment", nullable = true)
 	private String status;
-
-	public Appointment(Long id, LocalDateTime appointmentDateTime, String status) {
+	
+	
+	public Appointment() {
+	
+	}
+	
+	public Appointment(String appointmentDateTime, String status) {
 		
-		this.id = id;
+		
 		this.appointmentDateTime = appointmentDateTime;
 		this.status = status;
 	}
 
+	
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public LocalDateTime getAppointmentDateTime() {
+	public String getAppointmentDateTime() {
 		return appointmentDateTime;
 	}
 
-	public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
+	public void setAppointmentDateTime(String appointmentDateTime) {
 		this.appointmentDateTime = appointmentDateTime;
 	}
 
@@ -55,10 +58,6 @@ public class Appointment implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	
-	 
-	
 	
 	
 	

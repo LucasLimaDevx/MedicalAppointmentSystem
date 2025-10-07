@@ -20,7 +20,10 @@ public class Department implements Serializable{
 	
 	@Column(name = "department_name", nullable = false, length = 50)
 	private String departmentName;
-
+	
+	public Department() {
+	}
+	
 	public Department(Long id, String departmentName) {
 	
 		this.id = id;
