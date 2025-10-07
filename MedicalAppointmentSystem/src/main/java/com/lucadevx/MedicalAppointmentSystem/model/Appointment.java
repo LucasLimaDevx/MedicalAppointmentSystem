@@ -19,7 +19,7 @@ public class Appointment implements Serializable{
 	private Long id;
 	
 	
-	@Column(name = "appointment_date_time", nullable = true, length = 10)
+	@Column(name = "appointment_date_time", nullable = true, length = 100)
 	private String appointmentDateTime;
 	
 	@Column(name = "status_appointment", nullable = true)
