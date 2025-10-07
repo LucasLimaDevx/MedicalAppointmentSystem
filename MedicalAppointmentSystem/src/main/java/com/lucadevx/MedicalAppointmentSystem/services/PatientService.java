@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lucadevx.MedicalAppointmentSystem.dto.PatientDTO;
 import com.lucadevx.MedicalAppointmentSystem.model.Patient;
 import com.lucadevx.MedicalAppointmentSystem.repository.PatientRepository;
 
@@ -34,9 +35,9 @@ public class PatientService {
 		
 		patientRepository.setFirstName(patient.getFirstName());
 		patientRepository.setLastName(patient.getLastName());
+		patientRepository.setBirthDate(patient.getBirthDate());
 		patientRepository.setEmail(patient.getEmail());
 		patientRepository.setPhone(patient.getPhone());
-		patientRepository.setBirthDate(patient.getBirthDate());
 		
 		return repository.save(patientRepository);
 	}
@@ -44,6 +45,18 @@ public class PatientService {
 	
 	public void delete(Long id) {
 		repository.deleteById(id);
+	}
+	
+	public Patient fromDTO(PatientDTO patientDTO) {
+		Patient patient = new Patient();
+		
+		patient.setFirstName(patientDTO.firstName());
+		patient.setLastName(patientDTO.lastName());
+		patient.setEmail(patientDTO.email());
+		patient.setPhone(patientDTO.phone());
+		patient.setBirthDate(patientDTO.birthDate());
+		
+		return patient;
 	}
 
 }
