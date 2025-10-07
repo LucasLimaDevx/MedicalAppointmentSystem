@@ -27,5 +27,18 @@ public class PatientService {
 	public List<Patient> findAll(){
 		return repository.findAll();
 	}
+	
+	public Patient update(Patient patient) {
+		
+		Patient patientRepository = findById(patient.getId());
+		
+		patientRepository.setFirstName(patient.getFirstName());
+		patientRepository.setLastName(patient.getLastName());
+		patientRepository.setEmail(patient.getEmail());
+		patientRepository.setPhone(patient.getPhone());
+		patientRepository.setBirthDate(patient.getBirthDate());
+		
+		return repository.save(patientRepository);
+	}
 
 }
