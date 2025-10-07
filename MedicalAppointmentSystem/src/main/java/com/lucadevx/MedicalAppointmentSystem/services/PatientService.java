@@ -40,5 +40,10 @@ public class PatientService {
 		
 		return repository.save(patientRepository);
 	}
+	
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
 
 }
