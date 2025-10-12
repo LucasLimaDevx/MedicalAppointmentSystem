@@ -19,7 +19,7 @@ public class Department implements Serializable{
 	private Long id;
 	
 	@Column(name = "department_name", nullable = false, length = 50)
-	private String departmentName;
+	private String departmentName;	
 	
 	public Department() {
 	}

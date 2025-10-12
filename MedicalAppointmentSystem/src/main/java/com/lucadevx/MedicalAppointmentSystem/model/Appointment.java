@@ -2,11 +2,16 @@ package com.lucadevx.MedicalAppointmentSystem.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,6 +30,11 @@ public class Appointment implements Serializable{
 	@Column(name = "status_appointment", nullable = true)
 	private String status;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@ManyToOne
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
+	
 	
 	public Appointment() {
 	
@@ -36,7 +46,6 @@ public class Appointment implements Serializable{
 		this.appointmentDateTime = appointmentDateTime;
 		this.status = status;
 	}
-
 	
 	public Long getId() {
 		return id;
@@ -58,9 +67,10 @@ public class Appointment implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
-	
+
+	public Patient getPatient() {
+		return patient;
+	}
 	
 	
 }

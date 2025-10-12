@@ -26,47 +26,30 @@ import com.lucadevx.MedicalAppointmentSystem.services.PatientService;
 public class PatientController {
 	
 	@Autowired
-	private PatientService services;
+	private PatientService patientServices;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PatientDTO create(@RequestBody PatientDTO patientDTO) {
-		Patient patient = services.fromDTO(patientDTO);
-		Patient patientSaved = services.create(patient);
+		Patient patient = patientServices.parseToPatient(patientDTO);
 		
 		
-		return new PatientDTO(
-				patientSaved.getId(),
-				patientSaved.getFirstName(),
-				patientSaved.getLastName(), 
-				patientSaved.getPhone(), 
-				patientSaved.getEmail(), 
-				patientSaved.getBirthDate());
+		return patientServices.parseToDTO(patientServices.create(patient));
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PatientDTO findById(@PathVariable Long id) {
 		
-		Patient patient = services.findById(id);
+		Patient patient = patientServices.findById(id);
 		
-		return new PatientDTO(patient.getId(),
-				   patient.getFirstName(), 
-				   patient.getLastName(), 
-				   patient.getPhone(), 
-				   patient.getEmail(), 
-				   patient.getBirthDate());
+		return patientServices.parseToDTO(patient);
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<PatientDTO> findAll(){
-		List<Patient> patients = services.findAll();
+		List<Patient> patients = patientServices.findAll();
 		
-		List<PatientDTO> patientsDTO = patients.stream().map(patient -> 
-		new PatientDTO(patient.getId(),
-					   patient.getFirstName(), 
-					   patient.getLastName(), 
-					   patient.getPhone(), 
-					   patient.getEmail(), 
-					   patient.getBirthDate()))
+		List<PatientDTO> patientsDTO = patients.stream()
+				.map(patient -> patientServices.parseToDTO(patient))
 				.collect(Collectors.toList());
 		
 		return patientsDTO;
@@ -74,23 +57,17 @@ public class PatientController {
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PatientDTO update(@RequestBody PatientDTO patientDTO) {
-		Patient patient = services.fromDTO(patientDTO);
+		
+		Patient patient = patientServices.parseToPatient(patientDTO);
 		patient.setId(patientDTO.id());
 		
-		Patient patientSaved = services.update(patient);
 		
-		return new PatientDTO(
-				patientSaved.getId(),
-				patientSaved.getFirstName(),
-				patientSaved.getLastName(), 
-				patientSaved.getPhone(), 
-				patientSaved.getEmail(), 
-				patientSaved.getBirthDate());
+		return patientServices.parseToDTO(patientServices.update(patient));
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
-		services.delete(id);
+		patientServices.delete(id);
 		
 		return ResponseEntity.noContent().build();
 		

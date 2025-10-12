@@ -1,12 +1,16 @@
 package com.lucadevx.MedicalAppointmentSystem.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,6 +36,9 @@ public class Patient implements Serializable{
 	
 	@Column(name = "birth_date", nullable = false)
 	private String birthDate;
+	
+	@OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+	private Set<Appointment> appointments = new HashSet<>();
 	
 	public Patient() {
 	}
@@ -93,7 +100,14 @@ public class Patient implements Serializable{
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
-	
+
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 	
 	
 	

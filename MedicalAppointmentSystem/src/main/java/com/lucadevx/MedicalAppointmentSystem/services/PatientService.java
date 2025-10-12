@@ -23,6 +23,7 @@ public class PatientService {
 	public Patient findById(Long id) {
 		
 		return repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Object not found"));
+		
 	}
 	
 	public List<Patient> findAll(){
@@ -47,7 +48,7 @@ public class PatientService {
 		repository.deleteById(id);
 	}
 	
-	public Patient fromDTO(PatientDTO patientDTO) {
+	public Patient parseToPatient(PatientDTO patientDTO) {
 		Patient patient = new Patient();
 		
 		patient.setFirstName(patientDTO.firstName());
@@ -57,6 +58,18 @@ public class PatientService {
 		patient.setBirthDate(patientDTO.birthDate());
 		
 		return patient;
+	}
+	
+	public PatientDTO parseToDTO(Patient patient) {
+		
+		return new PatientDTO(
+				patient.getId(),
+				patient.getFirstName(),
+				patient.getLastName(), 
+				patient.getPhone(), 
+				patient.getEmail(), 
+				patient.getBirthDate(),
+				patient.getAppointments());
 	}
 
 }
