@@ -34,6 +34,8 @@ public class AppointmentService {
 		
 		appointmentRepository.setAppointmentDateTime(appointment.getAppointmentDateTime());
 		appointmentRepository.setStatus(appointment.getStatus());
+		appointmentRepository.setDepartment(appointment.getDepartment());
+		
 		return repository.save(appointmentRepository);
 	}
 	
