@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,9 +25,11 @@ public class Department implements Serializable{
 	@Column(name = "department_name", nullable = false, length = 50)
 	private String departmentName;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
 	private Set<Appointment> appointments = new HashSet<>();
+	
+	@OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
+	private Set<Doctor> doctors = new HashSet<>();
 	
 	public Department() {
 	}
@@ -58,6 +58,10 @@ public class Department implements Serializable{
 
 	public Set<Appointment> getAppointments() {
 		return appointments;
+	}
+
+	public Set<Doctor> getDoctors() {
+		return doctors;
 	}
 
 	

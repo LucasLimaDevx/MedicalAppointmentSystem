@@ -36,8 +36,8 @@ public class DoctorService {
 		doctorRepository.setLastName(doctor.getLastName());
 		doctorRepository.setEmail(doctor.getEmail());
 		doctorRepository.setPhone(doctor.getPhone());
-		doctorRepository.setSpecialty(doctor.getSpecialty());
-		
+		doctorRepository.setSpeciality(doctor.getSpeciality());
+		doctorRepository.setDepartment(doctor.getDepartment());
 		return repository.save(doctorRepository);
 	}
 	

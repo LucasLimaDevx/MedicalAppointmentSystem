@@ -1,12 +1,22 @@
 package com.lucadevx.MedicalAppointmentSystem.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,21 +43,30 @@ public class Doctor implements Serializable{
 	@Column(name="crm", nullable = false, length = 20)
 	private String crm;
 	
-	@Column(name = "specialty", nullable = false, length = 50)
-	private String specialty;
+	@Column(name = "speciality", nullable = false, length = 50)
+	private String speciality;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@JoinColumn(name = "department_id")
+	@ManyToOne
+	private Department department;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+	private Set<Appointment> appointments = new HashSet<>();
+
 	public Doctor() {
 	}
-
-	public Doctor(Long id, String firstName, String lastName, String phone, String email, String crm, String specialty) {
-
-		this.id = id;
+	
+	public Doctor(String firstName, String lastName, String phone, String email, String crm, String speciality) {
+	
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
 		this.email = email;
 		this.crm = crm;
-		this.specialty = specialty;
+		this.speciality = speciality;
+		
 	}
 
 	public Long getId() {
@@ -98,18 +117,28 @@ public class Doctor implements Serializable{
 		this.crm = crm;
 	}
 
-	public String getSpecialty() {
-		return specialty;
+	public String getSpeciality() {
+		return speciality;
 	}
 
-	public void setSpecialty(String specialty) {
-		this.specialty = specialty;
+	public void setSpeciality(String speciality) {
+		this.speciality = speciality;
 	}
-	
-	
-	
-	
-	
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+
+
 	
 	
 }

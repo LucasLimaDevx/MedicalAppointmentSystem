@@ -24,10 +24,10 @@ public class Appointment implements Serializable{
 	private Long id;
 	
 	
-	@Column(name = "appointment_date_time", nullable = true, length = 100)
+	@Column(name = "appointment_date_time", nullable = false, length = 100)
 	private String appointmentDateTime;
 	
-	@Column(name = "status_appointment", nullable = true)
+	@Column(name = "status_appointment", nullable = false)
 	private String status;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
@@ -35,16 +35,21 @@ public class Appointment implements Serializable{
 	@ManyToOne
 	private Patient patient;
 	
-	@JsonProperty(access = Access.READ_WRITE)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@JoinColumn(name = "department_id")
 	@ManyToOne
 	private Department department;
+	
+	@JsonProperty(access = Access.READ_WRITE)
+	@JoinColumn(name = "doctor_id")
+	@ManyToOne
+	private Doctor doctor;
 	
 	public Appointment() {
 	
 	}
 	
-	public Appointment(String appointmentDateTime, String status) {
+	public Appointment(String appointmentDateTime, String status, Patient Patient, Department department) {
 		
 		
 		this.appointmentDateTime = appointmentDateTime;
@@ -83,8 +88,15 @@ public class Appointment implements Serializable{
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
-	
-	
-	
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
 	
 }
+	

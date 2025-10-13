@@ -10,16 +10,19 @@ import com.lucadevx.MedicalAppointmentSystem.repository.AppointmentRepository;
 
 @Service
 public class AppointmentService {
-	
+
 	@Autowired
 	private AppointmentRepository repository;
 	
 	public Appointment create(Appointment appointment) {
+
 		
 		return repository.save(appointment);
 	}
 	
 	public Appointment findById(Long id) {
+		
+		
 		
 		return repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Object not found"));
 	}
@@ -30,13 +33,14 @@ public class AppointmentService {
 	
 	public Appointment update(Appointment appointment) {
 		
-		Appointment appointmentRepository = findById(appointment.getId());
+		Appointment appointmentCurrent = findById(appointment.getId());
 		
-		appointmentRepository.setAppointmentDateTime(appointment.getAppointmentDateTime());
-		appointmentRepository.setStatus(appointment.getStatus());
-		appointmentRepository.setDepartment(appointment.getDepartment());
+		appointmentCurrent.setAppointmentDateTime(appointment.getAppointmentDateTime());
+		appointmentCurrent.setStatus(appointment.getStatus());
+		appointmentCurrent.setDepartment(appointment.getDepartment());
+		appointmentCurrent.setDoctor(appointment.getDoctor());
 		
-		return repository.save(appointmentRepository);
+		return repository.save(appointmentCurrent);
 	}
 	
 	
