@@ -2,6 +2,7 @@ package com.lucadevx.MedicalAppointmentSystem.controllers;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lucadevx.MedicalAppointmentSystem.dto.AppointmentDTO;
 import com.lucadevx.MedicalAppointmentSystem.model.Appointment;
 import com.lucadevx.MedicalAppointmentSystem.services.AppointmentService;
 
@@ -27,27 +29,35 @@ public class AppointmentController {
 	private AppointmentService services;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Appointment create(@RequestBody Appointment appointment) {
+	public AppointmentDTO create(@RequestBody Appointment appointment) {
 		
-		return services.create(appointment);
+		return services.parseToDTO(services.create(appointment));
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Appointment findById(@PathVariable Long id) {
+	public AppointmentDTO findById(@PathVariable Long id) {
+		Appointment appointment = services.findById(id);
+		AppointmentDTO appointmentDTO = services.parseToDTO(appointment);
 		
-		return services.findById(id);
+		return appointmentDTO;
 		
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Appointment> findAll(){
-		return services.findAll();
+	public List<AppointmentDTO> findAll(){
+		List<Appointment> appointments = services.findAll();
+		
+		List<AppointmentDTO> appointmentsDTO = appointments.stream()
+				.map(appointment -> services.parseToDTO(appointment))
+				.collect(Collectors.toList());
+		
+		return appointmentsDTO;
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Appointment update(@RequestBody Appointment appointment) {
+	public AppointmentDTO update(@RequestBody Appointment appointment) {
 		
-		return services.update(appointment);
+		return services.parseToDTO(services.update(appointment));
 	}
 	
 	@DeleteMapping("/{id}")

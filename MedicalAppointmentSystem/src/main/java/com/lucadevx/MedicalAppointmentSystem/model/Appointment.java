@@ -59,7 +59,10 @@ public class Appointment implements Serializable{
 	public Long getId() {
 		return id;
 	}
-
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getAppointmentDateTime() {
 		return appointmentDateTime;
@@ -79,6 +82,10 @@ public class Appointment implements Serializable{
 
 	public Patient getPatient() {
 		return patient;
+	}
+	
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	public Department getDepartment() {

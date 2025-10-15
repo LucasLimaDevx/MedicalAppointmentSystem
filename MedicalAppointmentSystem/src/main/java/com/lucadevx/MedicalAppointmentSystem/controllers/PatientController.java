@@ -59,7 +59,6 @@ public class PatientController {
 	public PatientDTO update(@RequestBody PatientDTO patientDTO) {
 		
 		Patient patient = patientServices.parseToPatient(patientDTO);
-		patient.setId(patientDTO.id());
 		
 		
 		return patientServices.parseToDTO(patientServices.update(patient));

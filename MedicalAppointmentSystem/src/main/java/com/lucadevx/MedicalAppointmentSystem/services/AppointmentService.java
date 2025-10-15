@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lucadevx.MedicalAppointmentSystem.dto.AppointmentDTO;
 import com.lucadevx.MedicalAppointmentSystem.model.Appointment;
 import com.lucadevx.MedicalAppointmentSystem.repository.AppointmentRepository;
 
@@ -39,6 +40,7 @@ public class AppointmentService {
 		appointmentCurrent.setStatus(appointment.getStatus());
 		appointmentCurrent.setDepartment(appointment.getDepartment());
 		appointmentCurrent.setDoctor(appointment.getDoctor());
+		appointmentCurrent.setPatient(appointment.getPatient());
 		
 		return repository.save(appointmentCurrent);
 	}
@@ -47,5 +49,15 @@ public class AppointmentService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
-
+	
+	public AppointmentDTO parseToDTO(Appointment appointment) {
+		
+		return new AppointmentDTO(
+				appointment.getId(),
+				appointment.getAppointmentDateTime(),
+				appointment.getStatus(),
+				appointment.getPatient(),
+				appointment.getDoctor()
+			);
+	}
 }

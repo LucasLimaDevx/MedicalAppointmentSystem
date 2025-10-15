@@ -51,6 +51,7 @@ public class PatientService {
 	public Patient parseToPatient(PatientDTO patientDTO) {
 		Patient patient = new Patient();
 		
+		patient.setId(patientDTO.id());
 		patient.setFirstName(patientDTO.firstName());
 		patient.setLastName(patientDTO.lastName());
 		patient.setEmail(patientDTO.email());

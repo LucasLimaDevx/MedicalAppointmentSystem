@@ -1,12 +1,12 @@
 package com.lucadevx.MedicalAppointmentSystem.dto;
 
-import com.lucadevx.MedicalAppointmentSystem.model.Department;
+import com.lucadevx.MedicalAppointmentSystem.model.Doctor;
 import com.lucadevx.MedicalAppointmentSystem.model.Patient;
 
-public record AppointmentDTO(
+public record AppointmentDTO(Long id,
 		String appointmentDateTime, 
 		String status, 
-		Patient Patient, 
-		Department department) {
+		Patient patient, 
+		Doctor doctor) {
 
 }
