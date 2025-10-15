@@ -2,6 +2,7 @@ package com.lucadevx.MedicalAppointmentSystem.controllers;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lucadevx.MedicalAppointmentSystem.dto.DepartmentDTO;
 import com.lucadevx.MedicalAppointmentSystem.model.Department;
 import com.lucadevx.MedicalAppointmentSystem.services.DepartmentService;
 
@@ -27,27 +29,31 @@ public class DepartmentController {
 	private DepartmentService services;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Department create(@RequestBody Department department) {
-		
-		return services.create(department);
+	public DepartmentDTO create(@RequestBody Department department) {
+	
+		return services.parseToDTO(services.create(department));
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Department findById(@PathVariable Long id) {
-		
-		return services.findById(id);
+	public DepartmentDTO findById(@PathVariable Long id) {
+		Department department = services.findById(id);
+		return services.parseToDTO(department);
 		
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Department> findAll(){
-		return services.findAll();
+	public List<DepartmentDTO> findAll(){
+		List<Department> departments = services.findAll();
+		List<DepartmentDTO> departmentsDTO = departments.stream()
+				.map(department -> services.parseToDTO(department)).collect(Collectors.toList());
+		
+		return departmentsDTO;
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Department update(@RequestBody Department department) {
-		
-		return services.update(department);
+	public DepartmentDTO update(@RequestBody Department department) {
+	
+		return services.parseToDTO(services.update(department));
 	}
 	
 	@DeleteMapping("/{id}")
