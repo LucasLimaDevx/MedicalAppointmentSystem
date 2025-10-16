@@ -1,2 +1,4 @@
 # MedicalAppointmentSystem
-## Sistema de agendamento de consultas médicas
+
+Sistema de agendamentos de consultamentos com Springboot,JPA e MySQL
+
