@@ -1,12 +1,18 @@
 package com.lucadevx.MedicalAppointmentSystem.dto;
 
-import com.lucadevx.MedicalAppointmentSystem.model.Doctor;
-import com.lucadevx.MedicalAppointmentSystem.model.Patient;
+import java.time.LocalDateTime;
 
-public record AppointmentDTO(Long id,
-		String appointmentDateTime, 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.lucadevx.MedicalAppointmentSystem.model.Department;
+import com.lucadevx.MedicalAppointmentSystem.model.Doctor;
+
+public record AppointmentDTO(Long id, 
+		@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss") LocalDateTime appointmentDateTime,
 		String status, 
-		Patient patient, 
+		PatientDTO patient, 
+		@JsonProperty(access = Access.WRITE_ONLY) Department department,
 		Doctor doctor) {
 
 }

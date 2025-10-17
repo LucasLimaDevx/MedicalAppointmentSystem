@@ -29,7 +29,9 @@ public class AppointmentController {
 	private AppointmentService services;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public AppointmentDTO create(@RequestBody Appointment appointment) {
+	public AppointmentDTO create(@RequestBody AppointmentDTO appointmentDTO) {
+		
+		Appointment appointment = services.parseToAppointment(appointmentDTO);
 		
 		return services.parseToDTO(services.create(appointment));
 	}
@@ -55,7 +57,8 @@ public class AppointmentController {
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public AppointmentDTO update(@RequestBody Appointment appointment) {
+	public AppointmentDTO update(@RequestBody AppointmentDTO appointmentDTO) {
+		Appointment appointment = services.parseToAppointment(appointmentDTO);
 		
 		return services.parseToDTO(services.update(appointment));
 	}

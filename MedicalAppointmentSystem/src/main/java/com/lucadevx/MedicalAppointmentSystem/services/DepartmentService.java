@@ -1,6 +1,7 @@
 package com.lucadevx.MedicalAppointmentSystem.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class DepartmentService {
 	@Autowired
 	private DepartmentRepository repository;
 	
+	@Autowired
+	private AppointmentService appointmentService;
+	
 	public Department create(Department department) {
 		
 		return repository.save(department);
@@ -26,6 +30,7 @@ public class DepartmentService {
 	}
 	
 	public List<Department> findAll(){
+		
 		return repository.findAll();
 	}
 	
@@ -43,14 +48,23 @@ public class DepartmentService {
 		repository.deleteById(id);
 	}
 	
+	public Department parseToDepartment(DepartmentDTO departmentDTO) {
+		Department department = new Department();
+		department.setId(departmentDTO.id());
+		department.setDepartmentName(departmentDTO.departmentName());
+		
+		return department;
+	}
 	public DepartmentDTO parseToDTO(Department department) {
 		
 		return new DepartmentDTO(
 				department.getId(),
 				department.getDepartmentName(),
-				department.getAppointments(),
+				department.getAppointments().stream().map(appointment -> appointmentService.parseToDTO(appointment)).collect(Collectors.toSet()),
 				department.getDoctors()
 			);
+		
+
 	}
 
 }

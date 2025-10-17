@@ -1,9 +1,11 @@
 package com.lucadevx.MedicalAppointmentSystem.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.lucadevx.MedicalAppointmentSystem.model.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,10 +27,10 @@ public class Appointment implements Serializable{
 	
 	
 	@Column(name = "appointment_date_time", nullable = false, length = 100)
-	private String appointmentDateTime;
+	private LocalDateTime appointmentDateTime;
 	
 	@Column(name = "status_appointment", nullable = false)
-	private String status;
+	private Integer status;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@JoinColumn(name = "patient_id")
@@ -49,11 +51,11 @@ public class Appointment implements Serializable{
 	
 	}
 	
-	public Appointment(String appointmentDateTime, String status, Patient Patient, Department department) {
+	public Appointment(LocalDateTime appointmentDateTime, Status status, Patient Patient, Department department) {
 		
 		
 		this.appointmentDateTime = appointmentDateTime;
-		this.status = status;
+		setStatus(status);
 	}
 	
 	public Long getId() {
@@ -64,20 +66,20 @@ public class Appointment implements Serializable{
 		this.id = id;
 	}
 
-	public String getAppointmentDateTime() {
+	public LocalDateTime getAppointmentDateTime() {
 		return appointmentDateTime;
 	}
 
-	public void setAppointmentDateTime(String appointmentDateTime) {
+	public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
 		this.appointmentDateTime = appointmentDateTime;
 	}
 
-	public String getStatus() {
-		return status;
+	public Status getStatus() {
+		return Status.fromCode(status);
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatus(Status status) {
+		this.status = status.getCode();
 	}
 
 	public Patient getPatient() {

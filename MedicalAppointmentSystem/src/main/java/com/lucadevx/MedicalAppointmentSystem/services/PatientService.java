@@ -15,6 +15,8 @@ public class PatientService {
 	@Autowired
 	private PatientRepository repository;
 	
+	//private static final DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyy");
+	
 	public Patient create(Patient patient) {
 		
 		return repository.save(patient);
@@ -57,12 +59,13 @@ public class PatientService {
 		patient.setEmail(patientDTO.email());
 		patient.setPhone(patientDTO.phone());
 		patient.setBirthDate(patientDTO.birthDate());
+		//patient.setBirthDate(LocalDate.parse(patientDTO.birthDate(),formatterDate));
 		
 		return patient;
 	}
 	
 	public PatientDTO parseToDTO(Patient patient) {
-		
+		//patient.getBirthDate().format(formatterDate),
 		return new PatientDTO(
 				patient.getId(),
 				patient.getFirstName(),

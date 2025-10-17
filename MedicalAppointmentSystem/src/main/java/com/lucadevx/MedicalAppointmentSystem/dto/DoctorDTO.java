@@ -1,8 +1,8 @@
+
 package com.lucadevx.MedicalAppointmentSystem.dto;
 
-import java.util.Set;
-
-import com.lucadevx.MedicalAppointmentSystem.model.Appointment;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lucadevx.MedicalAppointmentSystem.model.Department;
 
 public record DoctorDTO(
 		Long id,
@@ -12,7 +12,7 @@ public record DoctorDTO(
 		String email, 
 		String crm, 
 		String speciality,
-		Set<Appointment> appointments
+		@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) Department department
 		) {
 
 }

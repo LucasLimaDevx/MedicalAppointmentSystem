@@ -29,11 +29,12 @@ public class DepartmentController {
 	private DepartmentService services;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentDTO create(@RequestBody Department department) {
-	
+	public DepartmentDTO create(@RequestBody DepartmentDTO departmentDTO) {
+		Department department = services.parseToDepartment(departmentDTO);
+		
 		return services.parseToDTO(services.create(department));
 	}
-	
+
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public DepartmentDTO findById(@PathVariable Long id) {
 		Department department = services.findById(id);
@@ -51,8 +52,8 @@ public class DepartmentController {
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentDTO update(@RequestBody Department department) {
-	
+	public DepartmentDTO update(@RequestBody DepartmentDTO departmentDTO) {
+		Department department = services.parseToDepartment(departmentDTO);
 		return services.parseToDTO(services.update(department));
 	}
 	
