@@ -3,8 +3,6 @@ package com.lucadevx.MedicalAppointmentSystem.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.lucadevx.MedicalAppointmentSystem.model.enums.Status;
 
 import jakarta.persistence.Column;
@@ -32,17 +30,14 @@ public class Appointment implements Serializable{
 	@Column(name = "status_appointment", nullable = false)
 	private Integer status;
 	
-	@JsonProperty(access = Access.WRITE_ONLY)
 	@JoinColumn(name = "patient_id")
 	@ManyToOne
 	private Patient patient;
 	
-	@JsonProperty(access = Access.WRITE_ONLY)
 	@JoinColumn(name = "department_id")
 	@ManyToOne
 	private Department department;
 	
-	@JsonProperty(access = Access.READ_WRITE)
 	@JoinColumn(name = "doctor_id")
 	@ManyToOne
 	private Doctor doctor;

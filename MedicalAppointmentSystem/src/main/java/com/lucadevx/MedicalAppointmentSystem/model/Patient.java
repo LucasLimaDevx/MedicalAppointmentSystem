@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -41,7 +39,6 @@ public class Patient implements Serializable{
 	@Column(name = "birth_date", nullable = false)
 	private LocalDate birthDate;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
 	private Set<Appointment> appointments = new HashSet<>();
 	
