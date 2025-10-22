@@ -21,6 +21,7 @@ import com.lucadevx.MedicalAppointmentSystem.model.Patient;
 import com.lucadevx.MedicalAppointmentSystem.services.PatientService;
 
 
+
 @RestController
 @RequestMapping("/api/patient")
 public class PatientController {
@@ -38,7 +39,9 @@ public class PatientController {
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PatientDTO findById(@PathVariable Long id) {
-		
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
 		Patient patient = patientServices.findById(id);
 		
 		return patientServices.parseToDTO(patient);
@@ -56,7 +59,11 @@ public class PatientController {
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public PatientDTO update(@RequestBody PatientDTO patientDTO) {
+	public PatientDTO update(@RequestBody PatientDTO patientDTO){
+	
+		if(patientDTO.id() == null || patientDTO.id() <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
 		
 		Patient patient = patientServices.parseToPatient(patientDTO);
 		
@@ -66,6 +73,10 @@ public class PatientController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		patientServices.delete(id);
 		
 		return ResponseEntity.noContent().build();

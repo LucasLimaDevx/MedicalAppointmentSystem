@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.PatientDTO;
+import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
 import com.lucadevx.MedicalAppointmentSystem.model.Patient;
 import com.lucadevx.MedicalAppointmentSystem.repository.PatientRepository;
 
@@ -15,16 +16,13 @@ public class PatientService {
 	@Autowired
 	private PatientRepository repository;
 	
-	//private static final DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyy");
-	
 	public Patient create(Patient patient) {
 		
 		return repository.save(patient);
 	}
 	
 	public Patient findById(Long id) {
-		
-		return repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Object not found"));
+		return repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
 	}
 	
@@ -59,13 +57,12 @@ public class PatientService {
 		patient.setEmail(patientDTO.email());
 		patient.setPhone(patientDTO.phone());
 		patient.setBirthDate(patientDTO.birthDate());
-		//patient.setBirthDate(LocalDate.parse(patientDTO.birthDate(),formatterDate));
 		
 		return patient;
 	}
 	
 	public PatientDTO parseToDTO(Patient patient) {
-		//patient.getBirthDate().format(formatterDate),
+		
 		return new PatientDTO(
 				patient.getId(),
 				patient.getFirstName(),
@@ -75,5 +72,7 @@ public class PatientService {
 				patient.getBirthDate(),
 				patient.getAppointments());
 	}
+	
+	
 
 }
