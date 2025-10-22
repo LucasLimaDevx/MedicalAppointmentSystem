@@ -22,7 +22,7 @@ public class HandlerException {
 	}
 	
 	@ExceptionHandler(ObjectNotFoundException.class)
-	public ResponseEntity<ExceptionResponse> handleAllException(ObjectNotFoundException exception , WebRequest request){
+	public ResponseEntity<ExceptionResponse> objectNotFound(ObjectNotFoundException exception , WebRequest request){
 		ExceptionResponse response = new ExceptionResponse(LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
 		
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
