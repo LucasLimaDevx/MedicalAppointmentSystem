@@ -37,6 +37,10 @@ public class DepartmentController {
 
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public DepartmentDTO findById(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		Department department = services.findById(id);
 		return services.parseToDTO(department);
 		
@@ -53,12 +57,21 @@ public class DepartmentController {
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public DepartmentDTO update(@RequestBody DepartmentDTO departmentDTO) {
+		
+		if(departmentDTO.id() == null || departmentDTO.id() <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		Department department = services.parseToDepartment(departmentDTO);
 		return services.parseToDTO(services.update(department));
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		services.delete(id);
 		
 		return ResponseEntity.noContent().build();

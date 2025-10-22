@@ -37,6 +37,10 @@ public class DoctorController {
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public DoctorDTO findById(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		Doctor doctor = services.findById(id);
 		
 		return services.parseToDTO(doctor);
@@ -53,6 +57,10 @@ public class DoctorController {
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public DoctorDTO update(@RequestBody DoctorDTO doctorDTO) {
+		if(doctorDTO.id() == null || doctorDTO.id() <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		Doctor doctor = services.parseToDoctor(doctorDTO);
 		
 		return services.parseToDTO(services.update(doctor));
@@ -60,6 +68,10 @@ public class DoctorController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		services.delete(id);
 		
 		return ResponseEntity.noContent().build();

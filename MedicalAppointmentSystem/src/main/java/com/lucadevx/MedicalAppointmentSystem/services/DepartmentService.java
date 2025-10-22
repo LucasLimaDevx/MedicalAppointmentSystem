@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.DepartmentDTO;
+import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
 import com.lucadevx.MedicalAppointmentSystem.model.Department;
 import com.lucadevx.MedicalAppointmentSystem.repository.DepartmentRepository;
 
@@ -26,7 +27,7 @@ public class DepartmentService {
 	
 	public Department findById(Long id) {
 		
-		return repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Object not found"));
+		return repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 	}
 	
 	public List<Department> findAll(){

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.AppointmentDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.PatientDTO;
+import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
 import com.lucadevx.MedicalAppointmentSystem.model.Appointment;
 import com.lucadevx.MedicalAppointmentSystem.model.Patient;
 import com.lucadevx.MedicalAppointmentSystem.model.enums.Status;
@@ -32,7 +33,7 @@ public class AppointmentService {
 		
 		
 		
-		return repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Object not found"));
+		return repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 	}
 	
 	public List<Appointment> findAll(){

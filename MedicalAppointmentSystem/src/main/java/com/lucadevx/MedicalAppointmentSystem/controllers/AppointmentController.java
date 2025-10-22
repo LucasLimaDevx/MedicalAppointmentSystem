@@ -38,6 +38,10 @@ public class AppointmentController {
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public AppointmentDTO findById(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		Appointment appointment = services.findById(id);
 		AppointmentDTO appointmentDTO = services.parseToDTO(appointment);
 		
@@ -58,6 +62,10 @@ public class AppointmentController {
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public AppointmentDTO update(@RequestBody AppointmentDTO appointmentDTO) {
+		if(appointmentDTO.id() == null || appointmentDTO.id() <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		Appointment appointment = services.parseToAppointment(appointmentDTO);
 		
 		return services.parseToDTO(services.update(appointment));
@@ -65,6 +73,10 @@ public class AppointmentController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
+		if(id <= 0) {
+			throw new IllegalArgumentException("Invalid id");
+		}
+		
 		services.delete(id);
 		
 		return ResponseEntity.noContent().build();
