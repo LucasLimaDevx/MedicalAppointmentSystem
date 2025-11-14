@@ -16,8 +16,15 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
 - Agendamentos de consultas
   
 # Rotas da API
-## Gerenciamento (/user, /appointment, /department, /doctor)
-
-|         Metódo        |   Rota    |   Descrição          |
-|-----------------------|-----------|----------------------|
-|   <mark>POST<mark/>   |   /user   |   Criar um usuário   |   
+## Gerenciamento (/users)
+| Método | Rota                    | Descrição                                |
+|--------|-------------------------|------------------------------------------|
+| POST   | /users                  | Cria um novo usuário                     |
+|--------|-------------------------|------------------------------------------|
+| GET    | /users                  | Lista todos os usuários                  |
+|--------|-------------------------|------------------------------------------|
+| GET    | /users/{id}             | Busca um usuário pelo ID                 |
+|--------|-------------------------|------------------------------------------|
+| PUT    | /users/{id}             | Atualiza todos os dados de um usuário    |
+|--------|-------------------------|------------------------------------------|
+| DELETE | /users/{id}             | Remove um usuário                        |
