@@ -9,3 +9,14 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
 - Spring Data JPA / Hibernet
 - MySQL
 - Maven
+
+## Funcionalidades
+- Cadastro de usuarios e doutores
+- Criação de departamentos
+- Agendamentos de consultas
+  
+# Rotas da API
+## Gerenciamento (/user, /appointment, /department, /doctor)
+
+|         Metódo        |   Rota    |   Descrição          |
+|   <mark>POST<mark/>   |   /user   |   Criar um usuário   |   
