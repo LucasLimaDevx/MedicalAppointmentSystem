@@ -19,4 +19,5 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
 ## Gerenciamento (/user, /appointment, /department, /doctor)
 
 |         Metódo        |   Rota    |   Descrição          |
+|-----------------------|-----------|----------------------|
 |   <mark>POST<mark/>   |   /user   |   Criar um usuário   |   
