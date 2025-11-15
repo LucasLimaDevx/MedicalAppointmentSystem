@@ -11,9 +11,7 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
 - Maven
 
 ## Funcionalidades
-- Cadastro de usuarios e doutores
-- Criação de departamentos
-- Agendamentos de consultas
+- CRUD de pacientes, consultas, departamentos e doutores
 
 ## Configuração e execução
   1. Clone o repositório:
