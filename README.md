@@ -18,7 +18,7 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
 ## Configuração e execução
   1. Clone o repositório:
      
-    git clone git@github.com:LucasLimaDevx/MedicalAppointmentSystem.git
+          git clone git@github.com:LucasLimaDevx/MedicalAppointmentSystem.git
 
 
   3. Configure o banco de dados com usuário e senha
@@ -44,12 +44,14 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
      
     
  4. Use o seguinte comando para entrar na pasta:
-     cd MedicalAppointmentSystem/MedicalAppointmentSystem
+
+        cd MedicalAppointmentSystem/MedicalAppointmentSystem
 
     
  7. Use o segunte comando na raíz da pasta:
 
-    mvn spring-boot:run
+        mvn spring-boot:run
+
      
 # Rotas da API
 ## Gerenciamento (/patient)
