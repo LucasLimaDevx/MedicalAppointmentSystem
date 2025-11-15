@@ -21,7 +21,7 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
           git clone git@github.com:LucasLimaDevx/MedicalAppointmentSystem.git
 
 
-  3. Configure o banco de dados com usuário e senha
+  3. No arquivo application.yml configure o banco de dados com usuário e senha
      
 
           spring:
