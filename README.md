@@ -94,3 +94,7 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
 | PUT    | /api/doctor/{id}             | Atualiza todos os dados de um doutor    |
 | DELETE | /api/doctor/{id}             | Remove um doutor                        |
 
+## Acesse a aplicação usando o POSTMAN
+
+Aplicação estará disponível em http//:localhost:8080
+
