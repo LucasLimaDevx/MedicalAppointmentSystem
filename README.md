@@ -96,3 +96,6 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
 
 Aplicação estará disponível em http//:localhost:8080
 
+## Autor
+
+Lucas Lima Silva: https://www.linkedin.com/in/lucaslimaitz/
