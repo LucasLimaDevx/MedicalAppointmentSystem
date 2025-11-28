@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.DoctorDTO;
+import com.lucadevx.MedicalAppointmentSystem.exception.DatabaseException;
 import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
 import com.lucadevx.MedicalAppointmentSystem.model.Doctor;
+import com.lucadevx.MedicalAppointmentSystem.model.Patient;
 import com.lucadevx.MedicalAppointmentSystem.repository.DoctorRepository;
 
 @Service
@@ -32,6 +34,7 @@ public class DoctorService {
 	
 	public Doctor update(Doctor doctor) {
 		
+		
 		Doctor doctorRepository = findById(doctor.getId());
 		
 		doctorRepository.setFirstName(doctor.getFirstName());
@@ -46,6 +49,12 @@ public class DoctorService {
 	
 	
 	public void delete(Long id) {
+		Doctor doctor = findById(id);
+	
+		if(!doctor.getAppointments().isEmpty()) {
+			throw new DatabaseException();
+		}
+		
 		repository.deleteById(id);
 	}
 	
