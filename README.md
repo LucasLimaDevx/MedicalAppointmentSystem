@@ -46,7 +46,7 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
         cd MedicalAppointmentSystem/MedicalAppointmentSystem
 
     
- 7. Use o segunte comando na raíz da pasta:
+ 7. Use o seguinte comando na raíz da pasta:
 
         mvn spring-boot:run
 
