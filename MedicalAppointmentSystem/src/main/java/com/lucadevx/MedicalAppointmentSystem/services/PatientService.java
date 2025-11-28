@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.PatientDTO;
+import com.lucadevx.MedicalAppointmentSystem.exception.DatabaseException;
 import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
 import com.lucadevx.MedicalAppointmentSystem.model.Patient;
 import com.lucadevx.MedicalAppointmentSystem.repository.PatientRepository;
@@ -45,6 +46,11 @@ public class PatientService {
 	
 	
 	public void delete(Long id) {
+		Patient patient = findById(id);
+		
+		if(!patient.getAppointments().isEmpty()) {
+			throw new DatabaseException();
+		}
 		repository.deleteById(id);
 	}
 	
