@@ -18,11 +18,7 @@ public class AppointmentService {
 
 	@Autowired
 	private AppointmentRepository repository;
-	
-	@Autowired
-	private PatientService patientService;
-	//private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-	
+
 	public Appointment create(Appointment appointment) {
 		
 		
@@ -58,13 +54,18 @@ public class AppointmentService {
 	}
 	
 	public Appointment parseToAppointment(AppointmentDTO appointmentDTO) {
-		Patient patient = patientService.parseToPatient(appointmentDTO.patient());
+		Patient patient = new Patient(
+				appointmentDTO.patient().id(),
+				appointmentDTO.patient().firstName(),
+				appointmentDTO.patient().lastName(),
+				appointmentDTO.patient().email(),
+				appointmentDTO.patient().phone(),
+				appointmentDTO.patient().birthDate());
 		
 		Appointment appointment = new Appointment();
 		
 		appointment.setId(appointmentDTO.id());
 		appointment.setAppointmentDateTime(appointmentDTO.appointmentDateTime());
-		//appointment.setAppointmentDateTime(LocalDateTime.parse(appointmentDTO.appointmentDateTime(), dateFormatter));
 		appointment.setDoctor(appointmentDTO.doctor());
 		appointment.setDepartment(appointmentDTO.department());
 		appointment.setStatus(Status.valueOf(appointmentDTO.status().toUpperCase()));
@@ -74,8 +75,16 @@ public class AppointmentService {
 	}
 	
 	public AppointmentDTO parseToDTO(Appointment appointment) {
-		//appointment.getAppointmentDateTime().format(dateFormatter)
-		PatientDTO patientDTO = patientService.parseToDTO(appointment.getPatient());
+	
+		PatientDTO patientDTO = new PatientDTO(
+				appointment.getPatient().getId(),
+				appointment.getPatient().getFirstName(),
+				appointment.getPatient().getLastName(),
+				appointment.getPatient().getEmail(),
+				appointment.getPatient().getPhone(),
+				appointment.getPatient().getBirthDate(),
+				appointment.getPatient().getAppointments());
+		
 		return new AppointmentDTO(
 				appointment.getId(),
 				appointment.getAppointmentDateTime(),

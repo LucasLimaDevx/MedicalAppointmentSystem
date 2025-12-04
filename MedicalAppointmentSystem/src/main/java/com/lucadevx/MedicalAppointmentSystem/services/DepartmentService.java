@@ -1,14 +1,18 @@
 package com.lucadevx.MedicalAppointmentSystem.services;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lucadevx.MedicalAppointmentSystem.dto.AppointmentDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.DepartmentDTO;
+import com.lucadevx.MedicalAppointmentSystem.dto.PatientDTO;
 import com.lucadevx.MedicalAppointmentSystem.exception.DatabaseException;
 import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
+import com.lucadevx.MedicalAppointmentSystem.model.Appointment;
 import com.lucadevx.MedicalAppointmentSystem.model.Department;
 import com.lucadevx.MedicalAppointmentSystem.repository.DepartmentRepository;
 
@@ -17,9 +21,6 @@ public class DepartmentService {
 	
 	@Autowired
 	private DepartmentRepository repository;
-	
-	@Autowired
-	private AppointmentService appointmentService;
 	
 	public Department create(Department department) {
 		
@@ -64,10 +65,32 @@ public class DepartmentService {
 	}
 	public DepartmentDTO parseToDTO(Department department) {
 		
+		Set<AppointmentDTO> appointmentsDTO = new HashSet<>();
+		
+		for(Appointment appointment : department.getAppointments()) {
+			PatientDTO patientDTO = new PatientDTO(
+					appointment.getPatient().getId(),
+					appointment.getPatient().getFirstName(),
+					appointment.getPatient().getLastName(),
+					appointment.getPatient().getEmail(),
+					appointment.getPatient().getPhone(),
+					appointment.getPatient().getBirthDate(),
+					appointment.getPatient().getAppointments());
+			
+			appointmentsDTO.add(
+					new AppointmentDTO(
+					appointment.getId(),
+					appointment.getAppointmentDateTime(),
+					appointment.getStatus().name(),
+					patientDTO,
+					appointment.getDepartment(),
+					appointment.getDoctor()));
+		}
+		
 		return new DepartmentDTO(
 				department.getId(),
 				department.getDepartmentName(),
-				department.getAppointments().stream().map(appointment -> appointmentService.parseToDTO(appointment)).collect(Collectors.toSet()),
+				appointmentsDTO,
 				department.getDoctors()
 			);
 		
