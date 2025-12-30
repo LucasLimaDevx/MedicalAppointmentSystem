@@ -1,11 +1,15 @@
 package com.lucadevx.MedicalAppointmentSystem.services;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.PatientDTO;
+import com.lucadevx.MedicalAppointmentSystem.dto.request.PatientRequestDTO;
+import com.lucadevx.MedicalAppointmentSystem.dto.response.PatientResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.exception.DatabaseException;
 import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
 import com.lucadevx.MedicalAppointmentSystem.model.Patient;
@@ -17,6 +21,7 @@ public class PatientService {
 	@Autowired
 	private PatientRepository repository;
 	
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public Patient create(Patient patient) {
 		
 		return repository.save(patient);
@@ -27,8 +32,12 @@ public class PatientService {
 		
 	}
 	
-	public List<Patient> findAll(){
-		return repository.findAll();
+	public List<PatientResponseDTO> findAll(){
+		List<Patient> patients= repository.findAll();
+		List<PatientResponseDTO> patientsResponseDTO = patients.stream()
+				.map(patient -> parseToDTO(patient))
+				.collect(Collectors.toList());
+		return patientsResponseDTO;
 	}
 	
 	public Patient update(Patient patient) {
@@ -54,29 +63,28 @@ public class PatientService {
 		repository.deleteById(id);
 	}
 	
-	public Patient parseToPatient(PatientDTO patientDTO) {
+	public Patient parseToPatient(PatientRequestDTO patientRequestDTO) {
 		Patient patient = new Patient();
 		
-		patient.setId(patientDTO.id());
-		patient.setFirstName(patientDTO.firstName());
-		patient.setLastName(patientDTO.lastName());
-		patient.setEmail(patientDTO.email());
-		patient.setPhone(patientDTO.phone());
-		patient.setBirthDate(patientDTO.birthDate());
+		patient.setId(patientRequestDTO.id());
+		patient.setFirstName(patientRequestDTO.firstName());
+		patient.setLastName(patientRequestDTO.lastName());
+		patient.setEmail(patientRequestDTO.email());
+		patient.setPhone(patientRequestDTO.phone());
+		patient.setBirthDate(patientRequestDTO.birthDate());
 		
 		return patient;
 	}
 	
-	public PatientDTO parseToDTO(Patient patient) {
+	public PatientResponseDTO parseToDTO(Patient patient) {
 		
-		return new PatientDTO(
+		return new PatientResponseDTO(
 				patient.getId(),
 				patient.getFirstName(),
 				patient.getLastName(), 
 				patient.getPhone(), 
 				patient.getEmail(), 
-				patient.getBirthDate(),
-				patient.getAppointments());
+				patient.getBirthDate().format(formatter));
 	}
 	
 	
