@@ -28,7 +28,7 @@ Sistema de agendamentos de consultamentos com Springboot, JPA e MySQL. Este proj
      
           datasource:
             driver-class-name: com.mysql.cj.jdbc.Driver
-            url: jdbc:mysql://localhost:3306/medical_appointment_system?useTimezone=true&serverTimezone=UTC
+            url: jdbc:mysql://localhost:3306/(nome_do_banco_de_dados)?useTimezone=true&serverTimezone=UTC
             username: nome_do_usuario
             password: senha_do_usuário
         
