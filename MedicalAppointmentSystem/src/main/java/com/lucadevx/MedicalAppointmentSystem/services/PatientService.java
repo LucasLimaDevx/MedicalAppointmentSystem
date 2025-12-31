@@ -21,14 +21,16 @@ public class PatientService {
 	@Autowired
 	private PatientRepository repository;
 	
-	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	public Patient create(Patient patient) {
+	private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	public PatientResponseDTO create(PatientRequestDTO patientRequestDTO) {
+		Patient patient = parseToPatient(patientRequestDTO);
 		
-		return repository.save(patient);
+		return parseToDTO(repository.save(patient));
 	}
 	
-	public Patient findById(Long id) {
-		return repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+	public PatientResponseDTO findById(Long id) {
+		return parseToDTO(repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found")));
 		
 	}
 	
@@ -40,22 +42,22 @@ public class PatientService {
 		return patientsResponseDTO;
 	}
 	
-	public Patient update(Patient patient) {
+	public PatientResponseDTO update(PatientDTO patientDTO) {
 		
-		Patient patientRepository = findById(patient.getId());
+		Patient patientRepository = repository.findById(patientDTO.id()).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
-		patientRepository.setFirstName(patient.getFirstName());
-		patientRepository.setLastName(patient.getLastName());
-		patientRepository.setBirthDate(patient.getBirthDate());
-		patientRepository.setEmail(patient.getEmail());
-		patientRepository.setPhone(patient.getPhone());
+		patientRepository.setFirstName(patientDTO.firstName());
+		patientRepository.setLastName(patientDTO.lastName());
+		patientRepository.setBirthDate(patientDTO.birthDate());
+		patientRepository.setEmail(patientDTO.email());
+		patientRepository.setPhone(patientDTO.phone());
 		
-		return repository.save(patientRepository);
+		return parseToDTO(repository.save(patientRepository));
 	}
 	
 	
 	public void delete(Long id) {
-		Patient patient = findById(id);
+		Patient patient = repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
 		if(!patient.getAppointments().isEmpty()) {
 			throw new DatabaseException();
@@ -63,10 +65,9 @@ public class PatientService {
 		repository.deleteById(id);
 	}
 	
-	public Patient parseToPatient(PatientRequestDTO patientRequestDTO) {
+	public static Patient parseToPatient(PatientRequestDTO patientRequestDTO) {
 		Patient patient = new Patient();
 		
-		patient.setId(patientRequestDTO.id());
 		patient.setFirstName(patientRequestDTO.firstName());
 		patient.setLastName(patientRequestDTO.lastName());
 		patient.setEmail(patientRequestDTO.email());
@@ -76,15 +77,28 @@ public class PatientService {
 		return patient;
 	}
 	
-	public PatientResponseDTO parseToDTO(Patient patient) {
+	public static Patient parseToPatient(PatientDTO patientDTO) {
+		Patient patient = new Patient();
 		
-		return new PatientResponseDTO(
-				patient.getId(),
-				patient.getFirstName(),
-				patient.getLastName(), 
-				patient.getPhone(), 
-				patient.getEmail(), 
-				patient.getBirthDate().format(formatter));
+		patient.setFirstName(patientDTO.firstName());
+		patient.setLastName(patientDTO.lastName());
+		patient.setEmail(patientDTO.email());
+		patient.setPhone(patientDTO.phone());
+		patient.setBirthDate(patientDTO.birthDate());
+		
+		return patient;
+	}
+	
+	public static PatientResponseDTO parseToDTO(Patient patient) {
+		
+
+			return new PatientResponseDTO(
+					patient.getId(),
+					patient.getFirstName(),
+					patient.getLastName(), 
+					patient.getEmail(), 
+					patient.getPhone(), 
+					patient.getBirthDate().format(formatter));
 	}
 	
 	

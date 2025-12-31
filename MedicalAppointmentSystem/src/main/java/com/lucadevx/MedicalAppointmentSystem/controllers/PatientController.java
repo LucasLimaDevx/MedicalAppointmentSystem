@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lucadevx.MedicalAppointmentSystem.dto.PatientDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.request.PatientRequestDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.PatientResponseDTO;
-import com.lucadevx.MedicalAppointmentSystem.model.Patient;
 import com.lucadevx.MedicalAppointmentSystem.services.PatientService;
 
 
@@ -31,10 +31,10 @@ public class PatientController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PatientResponseDTO create(@RequestBody PatientRequestDTO patientRequestDTO) {
-		Patient patient = patientServices.parseToPatient(patientRequestDTO);
 		
 		
-		return patientServices.parseToDTO(patientServices.create(patient));
+		
+		return patientServices.create(patientRequestDTO);
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,9 +42,8 @@ public class PatientController {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
-		Patient patient = patientServices.findById(id);
 		
-		return patientServices.parseToDTO(patient);
+		return patientServices.findById(id);
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,16 +53,13 @@ public class PatientController {
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public PatientResponseDTO update(@RequestBody PatientRequestDTO patientRequestDTO){
+	public PatientResponseDTO update(@RequestBody PatientDTO patientDTO){
 	
-		if(patientRequestDTO.id() == null || patientRequestDTO.id() <= 0) {
+		if(patientDTO.id() == null || patientDTO.id() <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 		
-		Patient patient = patientServices.parseToPatient(patientRequestDTO);
-		
-		
-		return patientServices.parseToDTO(patientServices.update(patient));
+		return patientServices.update(patientDTO);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -4,8 +4,8 @@ public record PatientResponseDTO(
 		Long id, 
 		String firstName, 
 		String lastName, 
-		String phone, 
 		String email,
+		String phone, 
 		String birthDate) {
 
 }

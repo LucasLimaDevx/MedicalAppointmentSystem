@@ -2,7 +2,6 @@ package com.lucadevx.MedicalAppointmentSystem.controllers;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.DoctorDTO;
-import com.lucadevx.MedicalAppointmentSystem.model.Doctor;
+import com.lucadevx.MedicalAppointmentSystem.dto.request.DoctorRequestDTO;
+import com.lucadevx.MedicalAppointmentSystem.dto.response.DoctorResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.services.DoctorService;
 
 
@@ -29,41 +29,37 @@ public class DoctorController {
 	private DoctorService services;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DoctorDTO create(@RequestBody DoctorDTO doctorDTO) {
-		Doctor doctor = services.parseToDoctor(doctorDTO);
+	public DoctorResponseDTO create(@RequestBody DoctorRequestDTO doctorRequestDTO) {
 		
-		return services.parseToDTO(services.create(doctor));
+		return services.create(doctorRequestDTO);
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public DoctorDTO findById(@PathVariable Long id) {
+	public DoctorResponseDTO findById(@PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 		
-		Doctor doctor = services.findById(id);
 		
-		return services.parseToDTO(doctor);
+		return services.findById(id);
 		
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<DoctorDTO> findAll(){
-		List<Doctor> doctors = services.findAll();
-		List<DoctorDTO> doctorsDTO = doctors.stream().map(doctor -> services.parseToDTO(doctor)).collect(Collectors.toList());
+	public List<DoctorResponseDTO> findAll(){
 		
-		return doctorsDTO;
+		
+		return services.findAll();
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DoctorDTO update(@RequestBody DoctorDTO doctorDTO) {
+	public DoctorResponseDTO update(@RequestBody DoctorDTO doctorDTO) {
 		if(doctorDTO.id() == null || doctorDTO.id() <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
+
 		
-		Doctor doctor = services.parseToDoctor(doctorDTO);
-		
-		return services.parseToDTO(services.update(doctor));
+		return services.update(doctorDTO);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -2,7 +2,6 @@ package com.lucadevx.MedicalAppointmentSystem.controllers;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.AppointmentDTO;
-import com.lucadevx.MedicalAppointmentSystem.model.Appointment;
+import com.lucadevx.MedicalAppointmentSystem.dto.request.AppointmentRequestDTO;
+import com.lucadevx.MedicalAppointmentSystem.dto.response.AppointmentResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.services.AppointmentService;
 
 
@@ -28,47 +28,38 @@ public class AppointmentController {
 	@Autowired
 	private AppointmentService services;
 	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public AppointmentDTO create(@RequestBody AppointmentDTO appointmentDTO) {
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+	public AppointmentResponseDTO create(@RequestBody AppointmentRequestDTO appointmenRequestDTO) {
 		
-		Appointment appointment = services.parseToAppointment(appointmentDTO);
-		
-		return services.parseToDTO(services.create(appointment));
+		return services.create(appointmenRequestDTO);
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public AppointmentDTO findById(@PathVariable Long id) {
+	public AppointmentResponseDTO findById(@PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
+	
 		
-		Appointment appointment = services.findById(id);
-		AppointmentDTO appointmentDTO = services.parseToDTO(appointment);
-		
-		return appointmentDTO;
+		return services.findById(id);
 		
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<AppointmentDTO> findAll(){
-		List<Appointment> appointments = services.findAll();
+	public List<AppointmentResponseDTO> findAll(){
 		
-		List<AppointmentDTO> appointmentsDTO = appointments.stream()
-				.map(appointment -> services.parseToDTO(appointment))
-				.collect(Collectors.toList());
 		
-		return appointmentsDTO;
+		return services.findAll();
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public AppointmentDTO update(@RequestBody AppointmentDTO appointmentDTO) {
+	public AppointmentResponseDTO update(@RequestBody AppointmentDTO appointmentDTO) {
 		if(appointmentDTO.id() == null || appointmentDTO.id() <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 		
-		Appointment appointment = services.parseToAppointment(appointmentDTO);
 		
-		return services.parseToDTO(services.update(appointment));
+		return services.update(appointmentDTO);
 	}
 	
 	@DeleteMapping("/{id}")

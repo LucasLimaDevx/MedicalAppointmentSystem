@@ -1,16 +1,22 @@
 package com.lucadevx.MedicalAppointmentSystem.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.DoctorDTO;
+import com.lucadevx.MedicalAppointmentSystem.dto.request.DoctorRequestDTO;
+import com.lucadevx.MedicalAppointmentSystem.dto.response.DoctorResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.exception.DatabaseException;
 import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
+import com.lucadevx.MedicalAppointmentSystem.model.Department;
 import com.lucadevx.MedicalAppointmentSystem.model.Doctor;
-import com.lucadevx.MedicalAppointmentSystem.model.Patient;
+import com.lucadevx.MedicalAppointmentSystem.repository.DepartmentRepository;
 import com.lucadevx.MedicalAppointmentSystem.repository.DoctorRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class DoctorService {
@@ -18,38 +24,55 @@ public class DoctorService {
 	@Autowired
 	private DoctorRepository repository;
 	
-	public Doctor create(Doctor doctor) {
+	@Autowired
+	private DepartmentRepository departmentRepository;
+	
+	public DoctorResponseDTO create(DoctorRequestDTO doctorRequestDTO) {
+		Doctor doctor = parseToDoctor(doctorRequestDTO);
 		
-		return repository.save(doctor);
+		return parseToDTO(repository.save(doctor));
 	}
 	
-	public Doctor findById(Long id) {
+	public DoctorResponseDTO findById(Long id) {
 		
-		return repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+		return parseToDTO(repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found")));
 	}
 	
-	public List<Doctor> findAll(){
-		return repository.findAll();
+	public List<DoctorResponseDTO> findAll(){
+		List<Doctor> doctors = repository.findAll();
+		List<DoctorResponseDTO> doctorsResponseDTO = doctors.stream()
+				.map(doctor -> parseToDTO(doctor))
+				.collect(Collectors.toList());
+		
+		return doctorsResponseDTO;
+		
 	}
 	
-	public Doctor update(Doctor doctor) {
+	@Transactional
+	public DoctorResponseDTO update(DoctorDTO doctorDTO) {
 		
 		
-		Doctor doctorRepository = findById(doctor.getId());
+		Doctor doctorRepository = repository.findById(doctorDTO.id())
+				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
-		doctorRepository.setFirstName(doctor.getFirstName());
-		doctorRepository.setLastName(doctor.getLastName());
-		doctorRepository.setEmail(doctor.getEmail());
-		doctorRepository.setPhone(doctor.getPhone());
-		doctorRepository.setCrm(doctor.getCrm());
-		doctorRepository.setSpeciality(doctor.getSpeciality());
-		doctorRepository.setDepartment(doctor.getDepartment());
-		return repository.save(doctorRepository);
+		Department department = departmentRepository.findById(doctorDTO.department().id())
+				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+		
+		doctorRepository.setFirstName(doctorDTO.firstName());
+		doctorRepository.setLastName(doctorDTO.lastName());
+		doctorRepository.setEmail(doctorDTO.email());
+		doctorRepository.setPhone(doctorDTO.phone());
+		doctorRepository.setCrm(doctorDTO.crm());
+		doctorRepository.setSpeciality(doctorDTO.speciality());
+		doctorRepository.setDepartment(department);
+		
+		return parseToDTO(repository.save(doctorRepository));
 	}
 	
 	
 	public void delete(Long id) {
-		Doctor doctor = findById(id);
+		Doctor doctor = repository.findById(id)
+				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 	
 		if(!doctor.getAppointments().isEmpty()) {
 			throw new DatabaseException();
@@ -58,31 +81,42 @@ public class DoctorService {
 		repository.deleteById(id);
 	}
 	
-	public Doctor parseToDoctor(DoctorDTO doctorDTO) {
+	public static Doctor parseToDoctor(DoctorRequestDTO doctorRequestDTO) {
 		Doctor doctor = new Doctor();
 		
-		doctor.setId(doctorDTO.id());
+		doctor.setFirstName(doctorRequestDTO.firstName());
+		doctor.setLastName(doctorRequestDTO.lastName());
+		doctor.setPhone(doctorRequestDTO.phone());
+		doctor.setDepartment(doctorRequestDTO.department());
+		doctor.setEmail(doctorRequestDTO.email());
+		doctor.setCrm(doctorRequestDTO.crm());
+		doctor.setSpeciality(doctorRequestDTO.speciality());
+		
+		return doctor;
+	}
+	
+	public static Doctor parseToDoctor(DoctorDTO doctorDTO) {
+		Doctor doctor = new Doctor();
+		
 		doctor.setFirstName(doctorDTO.firstName());
 		doctor.setLastName(doctorDTO.lastName());
 		doctor.setPhone(doctorDTO.phone());
-		doctor.setDepartment(doctorDTO.department());
 		doctor.setEmail(doctorDTO.email());
 		doctor.setCrm(doctorDTO.crm());
 		doctor.setSpeciality(doctorDTO.speciality());
 		
 		return doctor;
 	}
-	public DoctorDTO parseToDTO(Doctor doctor) {
+	public static DoctorResponseDTO parseToDTO(Doctor doctor) {
 		
-		return new DoctorDTO(
+		return new DoctorResponseDTO(
 				doctor.getId(),
 				doctor.getFirstName(),
 				doctor.getLastName(),
 				doctor.getPhone(),
 				doctor.getEmail(),
 				doctor.getCrm(),
-				doctor.getSpeciality(),
-				doctor.getDepartment()
+				doctor.getSpeciality()
 				
 			);
 	}

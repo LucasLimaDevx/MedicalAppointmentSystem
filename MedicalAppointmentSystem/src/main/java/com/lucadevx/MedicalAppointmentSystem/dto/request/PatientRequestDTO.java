@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public record PatientRequestDTO(Long id, 
+public record PatientRequestDTO(
 		String firstName, 
 		String lastName, 
 		String phone, 

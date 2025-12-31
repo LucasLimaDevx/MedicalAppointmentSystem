@@ -1,13 +1,7 @@
 package com.lucadevx.MedicalAppointmentSystem.dto;
 
-import java.util.Set;
-
-import com.lucadevx.MedicalAppointmentSystem.model.Doctor;
-
 public record DepartmentDTO(
 		Long id, 
-		String departmentName, 
-		Set<AppointmentDTO> appointments, 
-	    Set<Doctor> doctors) {
+		String departmentName) {
 
 }

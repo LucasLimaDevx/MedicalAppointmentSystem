@@ -2,7 +2,6 @@ package com.lucadevx.MedicalAppointmentSystem.controllers;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucadevx.MedicalAppointmentSystem.dto.DepartmentDTO;
-import com.lucadevx.MedicalAppointmentSystem.model.Department;
+import com.lucadevx.MedicalAppointmentSystem.dto.request.DepartmentRequestDTO;
+import com.lucadevx.MedicalAppointmentSystem.dto.response.DepartmentResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.services.DepartmentService;
 
 
@@ -29,41 +29,37 @@ public class DepartmentController {
 	private DepartmentService services;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentDTO create(@RequestBody DepartmentDTO departmentDTO) {
-		Department department = services.parseToDepartment(departmentDTO);
+	public DepartmentResponseDTO create(@RequestBody DepartmentRequestDTO departmentRequestDTO) {
 		
-		return services.parseToDTO(services.create(department));
+		return services.create(departmentRequestDTO);
 	}
 
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentDTO findById(@PathVariable Long id) {
+	public DepartmentResponseDTO findById(@PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 		
-		Department department = services.findById(id);
-		return services.parseToDTO(department);
+		
+		return services.findById(id);
 		
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<DepartmentDTO> findAll(){
-		List<Department> departments = services.findAll();
-		List<DepartmentDTO> departmentsDTO = departments.stream()
-				.map(department -> services.parseToDTO(department)).collect(Collectors.toList());
+	public List<DepartmentResponseDTO> findAll(){
 		
-		return departmentsDTO;
+		
+		return services.findAll();
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentDTO update(@RequestBody DepartmentDTO departmentDTO) {
-		
+	public DepartmentResponseDTO update(@RequestBody DepartmentDTO departmentDTO) {
 		if(departmentDTO.id() == null || departmentDTO.id() <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 		
-		Department department = services.parseToDepartment(departmentDTO);
-		return services.parseToDTO(services.update(department));
+		
+		return services.update(departmentDTO);
 	}
 	
 	@DeleteMapping("/{id}")
