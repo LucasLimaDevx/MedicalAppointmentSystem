@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lucadevx.MedicalAppointmentSystem.dto.DepartmentDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.request.DepartmentRequestDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.AppointmentResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.DepartmentResponseDTO;
@@ -50,9 +49,9 @@ public class DepartmentService {
 		return departmentsDTO;
 	}
 	
-	public DepartmentResponseDTO update(DepartmentDTO departmentDTO) {
+	public DepartmentResponseDTO update(DepartmentRequestDTO departmentDTO, Long id) {
 		
-		Department departmentRepository = repository.findById(departmentDTO.id())
+		Department departmentRepository = repository.findById(id)
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 				
 		departmentRepository.setDepartmentName(departmentDTO.departmentName());
@@ -75,15 +74,6 @@ public class DepartmentService {
 		Department department = new Department();
 		
 		department.setDepartmentName(departmentRequestDTO.departmentName());
-		
-		return department;
-	}
-	
-	public static Department parseToDepartment(DepartmentDTO departmentDTO) {
-		Department department = new Department();
-		
-		department.setDepartmentName(departmentDTO.departmentName());
-		department.setId(departmentDTO.id());
 		
 		return department;
 	}

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lucadevx.MedicalAppointmentSystem.dto.DoctorDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.request.DoctorRequestDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.DoctorResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.exception.DatabaseException;
@@ -29,6 +28,10 @@ public class DoctorService {
 	
 	public DoctorResponseDTO create(DoctorRequestDTO doctorRequestDTO) {
 		Doctor doctor = parseToDoctor(doctorRequestDTO);
+		Department department = departmentRepository.findById(doctorRequestDTO.departmentId())
+				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+		
+		doctor.setDepartment(department);
 		
 		return parseToDTO(repository.save(doctor));
 	}
@@ -49,21 +52,21 @@ public class DoctorService {
 	}
 	
 	@Transactional
-	public DoctorResponseDTO update(DoctorDTO doctorDTO) {
+	public DoctorResponseDTO update(DoctorRequestDTO doctorRequestDTO, Long id) {
 		
 		
-		Doctor doctorRepository = repository.findById(doctorDTO.id())
+		Doctor doctorRepository = repository.findById(id)
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
-		Department department = departmentRepository.findById(doctorDTO.department().id())
+		Department department = departmentRepository.findById(doctorRequestDTO.departmentId())
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
-		doctorRepository.setFirstName(doctorDTO.firstName());
-		doctorRepository.setLastName(doctorDTO.lastName());
-		doctorRepository.setEmail(doctorDTO.email());
-		doctorRepository.setPhone(doctorDTO.phone());
-		doctorRepository.setCrm(doctorDTO.crm());
-		doctorRepository.setSpeciality(doctorDTO.speciality());
+		doctorRepository.setFirstName(doctorRequestDTO.firstName());
+		doctorRepository.setLastName(doctorRequestDTO.lastName());
+		doctorRepository.setEmail(doctorRequestDTO.email());
+		doctorRepository.setPhone(doctorRequestDTO.phone());
+		doctorRepository.setCrm(doctorRequestDTO.crm());
+		doctorRepository.setSpeciality(doctorRequestDTO.speciality());
 		doctorRepository.setDepartment(department);
 		
 		return parseToDTO(repository.save(doctorRepository));
@@ -87,7 +90,6 @@ public class DoctorService {
 		doctor.setFirstName(doctorRequestDTO.firstName());
 		doctor.setLastName(doctorRequestDTO.lastName());
 		doctor.setPhone(doctorRequestDTO.phone());
-		doctor.setDepartment(doctorRequestDTO.department());
 		doctor.setEmail(doctorRequestDTO.email());
 		doctor.setCrm(doctorRequestDTO.crm());
 		doctor.setSpeciality(doctorRequestDTO.speciality());
@@ -95,18 +97,6 @@ public class DoctorService {
 		return doctor;
 	}
 	
-	public static Doctor parseToDoctor(DoctorDTO doctorDTO) {
-		Doctor doctor = new Doctor();
-		
-		doctor.setFirstName(doctorDTO.firstName());
-		doctor.setLastName(doctorDTO.lastName());
-		doctor.setPhone(doctorDTO.phone());
-		doctor.setEmail(doctorDTO.email());
-		doctor.setCrm(doctorDTO.crm());
-		doctor.setSpeciality(doctorDTO.speciality());
-		
-		return doctor;
-	}
 	public static DoctorResponseDTO parseToDTO(Doctor doctor) {
 		
 		return new DoctorResponseDTO(

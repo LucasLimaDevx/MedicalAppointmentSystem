@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lucadevx.MedicalAppointmentSystem.dto.DepartmentDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.request.DepartmentRequestDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.DepartmentResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.services.DepartmentService;
@@ -52,14 +51,13 @@ public class DepartmentController {
 		return services.findAll();
 	}
 	
-	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentResponseDTO update(@RequestBody DepartmentDTO departmentDTO) {
-		if(departmentDTO.id() == null || departmentDTO.id() <= 0) {
+	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public DepartmentResponseDTO update(@RequestBody DepartmentRequestDTO departmentRequestDTO, @PathVariable Long id) {
+		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 		
-		
-		return services.update(departmentDTO);
+		return services.update(departmentRequestDTO, id);
 	}
 	
 	@DeleteMapping("/{id}")

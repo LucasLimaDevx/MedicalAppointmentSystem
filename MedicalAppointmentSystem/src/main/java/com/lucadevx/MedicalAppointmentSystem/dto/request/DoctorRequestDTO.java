@@ -1,7 +1,5 @@
 package com.lucadevx.MedicalAppointmentSystem.dto.request;
 
-import com.lucadevx.MedicalAppointmentSystem.model.Department;
-
 public record DoctorRequestDTO(
 		String firstName, 
 		String lastName, 
@@ -9,4 +7,4 @@ public record DoctorRequestDTO(
 		String email, 
 		String crm, 
 		String speciality,
-		Department department) {}
+		Long departmentId) {}

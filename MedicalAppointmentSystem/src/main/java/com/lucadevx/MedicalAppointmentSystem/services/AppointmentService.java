@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lucadevx.MedicalAppointmentSystem.dto.AppointmentDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.request.AppointmentRequestDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.AppointmentResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.DoctorResponseDTO;
@@ -44,6 +43,19 @@ public class AppointmentService {
 
 	public AppointmentResponseDTO create(AppointmentRequestDTO appointmentRequestDTO) {
 		Appointment appointment = parseToAppointment(appointmentRequestDTO);
+
+		Patient patientCurrent = patientRepository.findById(appointmentRequestDTO.patientId())
+				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+		
+		Doctor doctorCurrent = doctorRepository.findById(appointmentRequestDTO.doctorId())
+				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+		
+		Department departmentCurrent = departmentRepository.findById(appointmentRequestDTO.departmentId())
+				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+		
+		appointment.setDepartment(departmentCurrent);
+		appointment.setDoctor(doctorCurrent);
+		appointment.setPatient(patientCurrent);
 		
 		return parseToDTO(repository.save(appointment));
 	}
@@ -65,24 +77,22 @@ public class AppointmentService {
 	}
 	
 	@Transactional
-	public AppointmentResponseDTO update(AppointmentDTO appointmentDTO) {
-		Appointment appointmentCurrent = repository.findById(appointmentDTO.id())
+	public AppointmentResponseDTO update(AppointmentRequestDTO appointmentRequestDTO, Long id) {
+		Appointment appointmentCurrent = repository.findById(id)
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
-		Patient patientCurrent = patientRepository.findById(appointmentDTO.patient().id())
+		Patient patientCurrent = patientRepository.findById(appointmentRequestDTO.patientId())
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
-		Doctor doctorCurrent = doctorRepository.findById(appointmentDTO.doctor().id())
+		Doctor doctorCurrent = doctorRepository.findById(appointmentRequestDTO.doctorId())
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
-		Department departmentCurrent = departmentRepository.findById(appointmentDTO.department().id())
+		Department departmentCurrent = departmentRepository.findById(appointmentRequestDTO.departmentId())
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 				
-		appointmentCurrent.setAppointmentDateTime(appointmentDTO.appointmentDateTime());
-		appointmentCurrent.setStatus(Status.valueOf(appointmentDTO.status().toUpperCase()));
-		appointmentCurrent.setDepartment(departmentCurrent);
-		appointmentCurrent.setDoctor(doctorCurrent);
-		appointmentCurrent.setPatient(patientCurrent);
+		appointmentCurrent.setAppointmentDateTime(appointmentRequestDTO.appointmentDateTime());
+		appointmentCurrent.setStatus(Status.valueOf(appointmentRequestDTO.status().toUpperCase()));
+		
 		
 		return parseToDTO(repository.save(appointmentCurrent));
 	}
@@ -96,20 +106,9 @@ public class AppointmentService {
 	public Appointment parseToAppointment(AppointmentRequestDTO appointmentRequestDTO) {
 		
 		Appointment appointment = new Appointment();
-		Patient patientCurrent = patientRepository.findById(appointmentRequestDTO.patient().id())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
-		
-		Doctor doctorCurrent = doctorRepository.findById(appointmentRequestDTO.doctor().id())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
-		
-		Department departmentCurrent = departmentRepository.findById(appointmentRequestDTO.department().id())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
 		appointment.setAppointmentDateTime(appointmentRequestDTO.appointmentDateTime());
 		appointment.setStatus(Status.valueOf(appointmentRequestDTO.status().toUpperCase()));
-		appointment.setDepartment(departmentCurrent);
-		appointment.setDoctor(doctorCurrent);
-		appointment.setPatient(patientCurrent);
 	
 		return appointment;
 	}

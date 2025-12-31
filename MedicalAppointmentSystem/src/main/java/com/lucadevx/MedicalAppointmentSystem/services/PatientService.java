@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lucadevx.MedicalAppointmentSystem.dto.PatientDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.request.PatientRequestDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.PatientResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.exception.DatabaseException;
@@ -42,15 +41,15 @@ public class PatientService {
 		return patientsResponseDTO;
 	}
 	
-	public PatientResponseDTO update(PatientDTO patientDTO) {
+	public PatientResponseDTO update(PatientRequestDTO patientRequestDTO, Long id) {
 		
-		Patient patientRepository = repository.findById(patientDTO.id()).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+		Patient patientRepository = repository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
-		patientRepository.setFirstName(patientDTO.firstName());
-		patientRepository.setLastName(patientDTO.lastName());
-		patientRepository.setBirthDate(patientDTO.birthDate());
-		patientRepository.setEmail(patientDTO.email());
-		patientRepository.setPhone(patientDTO.phone());
+		patientRepository.setFirstName(patientRequestDTO.firstName());
+		patientRepository.setLastName(patientRequestDTO.lastName());
+		patientRepository.setBirthDate(patientRequestDTO.birthDate());
+		patientRepository.setEmail(patientRequestDTO.email());
+		patientRepository.setPhone(patientRequestDTO.phone());
 		
 		return parseToDTO(repository.save(patientRepository));
 	}
@@ -77,17 +76,6 @@ public class PatientService {
 		return patient;
 	}
 	
-	public static Patient parseToPatient(PatientDTO patientDTO) {
-		Patient patient = new Patient();
-		
-		patient.setFirstName(patientDTO.firstName());
-		patient.setLastName(patientDTO.lastName());
-		patient.setEmail(patientDTO.email());
-		patient.setPhone(patientDTO.phone());
-		patient.setBirthDate(patientDTO.birthDate());
-		
-		return patient;
-	}
 	
 	public static PatientResponseDTO parseToDTO(Patient patient) {
 		
