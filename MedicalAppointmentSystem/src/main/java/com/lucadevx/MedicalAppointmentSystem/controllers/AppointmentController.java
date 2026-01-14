@@ -4,6 +4,7 @@ package com.lucadevx.MedicalAppointmentSystem.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,40 +29,41 @@ public class AppointmentController {
 	private AppointmentService services;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-	public AppointmentResponseDTO create(@RequestBody AppointmentRequestDTO appointmenRequestDTO) {
-		
-		return services.create(appointmenRequestDTO);
+	public ResponseEntity<AppointmentResponseDTO> create(@RequestBody AppointmentRequestDTO appointmenRequestDTO) {
+		AppointmentResponseDTO appointmentResponseDTO = services.create(appointmenRequestDTO);
+		return new ResponseEntity<>(appointmentResponseDTO, HttpStatus.CREATED);
+				
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public AppointmentResponseDTO findById(@PathVariable Long id) {
+	public ResponseEntity<AppointmentResponseDTO> findById(@PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 	
-		
-		return services.findById(id);
+		AppointmentResponseDTO appointmentResponseDTO = services.findById(id);
+		return ResponseEntity.ok(appointmentResponseDTO);
 		
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<AppointmentResponseDTO> findAll(){
+	public ResponseEntity<List<AppointmentResponseDTO>> findAll(){
 		
-		
-		return services.findAll();
+		List<AppointmentResponseDTO> appointmentResponseDTOs = services.findAll();
+		return ResponseEntity.ok(appointmentResponseDTOs);
 	}
 	
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public AppointmentResponseDTO update(@RequestBody AppointmentRequestDTO appointmentRequestDTO, @PathVariable Long id) {
+	public ResponseEntity<AppointmentResponseDTO> update(@RequestBody AppointmentRequestDTO appointmentRequestDTO, @PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
-		
-		return services.update(appointmentRequestDTO, id);
+		AppointmentResponseDTO appointmentUpdateResponseDTO = services.update(appointmentRequestDTO, id);
+		return ResponseEntity.ok(appointmentUpdateResponseDTO);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}

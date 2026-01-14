@@ -4,6 +4,7 @@ package com.lucadevx.MedicalAppointmentSystem.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,40 +29,40 @@ public class DepartmentController {
 	private DepartmentService services;
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentResponseDTO create(@RequestBody DepartmentRequestDTO departmentRequestDTO) {
-		
-		return services.create(departmentRequestDTO);
+	public ResponseEntity<DepartmentResponseDTO> create(@RequestBody DepartmentRequestDTO departmentRequestDTO) {
+		DepartmentResponseDTO departmentResponseDTO = services.create(departmentRequestDTO);
+		return new ResponseEntity<>(departmentResponseDTO, HttpStatus.CREATED);
 	}
 
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentResponseDTO findById(@PathVariable Long id) {
+	public ResponseEntity<DepartmentResponseDTO> findById(@PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
+		DepartmentResponseDTO departmentResponseDTO = services.findById(id);;
 		
-		
-		return services.findById(id);
+		return ResponseEntity.ok(departmentResponseDTO);
 		
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<DepartmentResponseDTO> findAll(){
+	public ResponseEntity<List<DepartmentResponseDTO>> findAll(){
 		
-		
-		return services.findAll();
+		List<DepartmentResponseDTO> departmentResponseDTOs = services.findAll();
+		return ResponseEntity.ok(departmentResponseDTOs);
 	}
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public DepartmentResponseDTO update(@RequestBody DepartmentRequestDTO departmentRequestDTO, @PathVariable Long id) {
+	public ResponseEntity<DepartmentResponseDTO> update(@RequestBody DepartmentRequestDTO departmentRequestDTO, @PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
-		
-		return services.update(departmentRequestDTO, id);
+		DepartmentResponseDTO departmentUpdateResponseDTO = services.update(departmentRequestDTO, id);
+		return ResponseEntity.ok(departmentUpdateResponseDTO);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
