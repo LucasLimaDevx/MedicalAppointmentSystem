@@ -23,7 +23,6 @@ import jakarta.persistence.Table;
 @Table(name="TB_DOCTOR")
 public class Doctor implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -46,12 +45,10 @@ public class Doctor implements Serializable{
 	@Column(name = "speciality", nullable = false, length = 50)
 	private String speciality;
 	
-	@JsonProperty(access = Access.WRITE_ONLY)
 	@JoinColumn(name = "department_id")
 	@ManyToOne
 	private Department department;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
 	private Set<Appointment> appointments = new HashSet<>();
 
