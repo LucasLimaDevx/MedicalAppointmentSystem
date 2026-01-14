@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import com.lucadevx.MedicalAppointmentSystem.exception.AppointmentNotAvailableException;
 import com.lucadevx.MedicalAppointmentSystem.exception.ExceptionResponse;
 import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
 
@@ -26,5 +27,12 @@ public class HandlerException {
 		ExceptionResponse response = new ExceptionResponse(LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
 		
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(AppointmentNotAvailableException.class)
+	public ResponseEntity<ExceptionResponse> objectNotFound(AppointmentNotAvailableException exception , WebRequest request){
+		ExceptionResponse response = new ExceptionResponse(LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
+		
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 }

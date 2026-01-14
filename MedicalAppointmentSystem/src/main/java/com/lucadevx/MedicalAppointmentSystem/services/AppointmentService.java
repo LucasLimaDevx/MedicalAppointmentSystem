@@ -1,5 +1,6 @@
 package com.lucadevx.MedicalAppointmentSystem.services;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import com.lucadevx.MedicalAppointmentSystem.dto.request.AppointmentRequestDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.AppointmentResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.DoctorResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.PatientResponseDTO;
+import com.lucadevx.MedicalAppointmentSystem.exception.AppointmentNotAvailableException;
 import com.lucadevx.MedicalAppointmentSystem.exception.ObjectNotFoundException;
 import com.lucadevx.MedicalAppointmentSystem.model.Appointment;
 import com.lucadevx.MedicalAppointmentSystem.model.Department;
@@ -42,6 +44,11 @@ public class AppointmentService {
 	private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
 	public AppointmentResponseDTO create(AppointmentRequestDTO appointmentRequestDTO) {
+		
+		if(!isAppointmentAvailable(appointmentRequestDTO.appointmentDateTime())) {
+			throw new AppointmentNotAvailableException(); 
+		}
+		
 		Appointment appointment = parseToAppointment(appointmentRequestDTO);
 
 		Patient patientCurrent = patientRepository.findById(appointmentRequestDTO.patientId())
@@ -78,6 +85,7 @@ public class AppointmentService {
 	
 	@Transactional
 	public AppointmentResponseDTO update(AppointmentRequestDTO appointmentRequestDTO, Long id) {
+		
 		Appointment appointmentCurrent = repository.findById(id)
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
 		
@@ -89,10 +97,22 @@ public class AppointmentService {
 		
 		Department departmentCurrent = departmentRepository.findById(appointmentRequestDTO.departmentId())
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
-				
+		/*
+		 *  
+		 * TRUE   ||  FALSE = true           !(TRUE  || FALSE) = FALSE 
+		 * FALSE  ||  TRUE = true            !(FALSE || TRUE ) = FALSE 
+		 * FALSE  ||  FALSE FALSE            !(FALSE || FALSE) = TRUE 
+		 * */
+		if(!(isAppointmentAvailable(appointmentRequestDTO.appointmentDateTime()) ||
+				appointmentCurrent.getAppointmentDateTime().equals(appointmentCurrent.getAppointmentDateTime())) ) {
+			
+			throw new AppointmentNotAvailableException(); 
+		}
 		appointmentCurrent.setAppointmentDateTime(appointmentRequestDTO.appointmentDateTime());
 		appointmentCurrent.setStatus(Status.valueOf(appointmentRequestDTO.status().toUpperCase()));
-		
+		appointmentCurrent.setDepartment(departmentCurrent);
+		appointmentCurrent.setDoctor(doctorCurrent);
+		appointmentCurrent.setPatient(patientCurrent);
 		
 		return parseToDTO(repository.save(appointmentCurrent));
 	}
@@ -102,7 +122,6 @@ public class AppointmentService {
 		repository.deleteById(id);
 	}
 	
-	@Transactional
 	public Appointment parseToAppointment(AppointmentRequestDTO appointmentRequestDTO) {
 		
 		Appointment appointment = new Appointment();
@@ -113,6 +132,7 @@ public class AppointmentService {
 		return appointment;
 	}
 
+	@Transactional
 	public AppointmentResponseDTO parseToDTO(Appointment appointment) {
 	
 		PatientResponseDTO patientResponseDTO = PatientService.parseToDTO(appointment.getPatient());
@@ -124,5 +144,19 @@ public class AppointmentService {
 				appointment.getStatus().name(),
 				patientResponseDTO,
 				doctorResponseDTO);
+	}
+	
+	public boolean isAppointmentAvailable(LocalDateTime appointmentDateTime) {
+		List<Appointment> appointmentsDB = repository.findAll();
+		
+		for(Appointment appointment : appointmentsDB) {
+			
+			if(appointment.getAppointmentDateTime().equals(appointmentDateTime)) {
+				return false;
+			}
+			
+		}
+		
+		return true;
 	}
 }
