@@ -59,7 +59,7 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 | POST   | /api/patient                | Cria um novo paciente                     |
 | GET    | /api/patient                | Lista todos os pacientes                  |
 | GET    | /api/patient/{id}           | Busca um paciente pelo ID                 |
-| PUT    | /api/patient                | Atualiza todos os dados de um paciente    |
+| PUT    | /api/patient/{id}           | Atualiza todos os dados de um paciente    |
 | DELETE | /api/patient/{id}           | Remove um paciente                        |
 
 ## Gerenciamento (/appointments)
@@ -69,7 +69,7 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 | POST   | /api/appointment                  | Cria um novo consulta                      |
 | GET    | /api/appointment                  | Lista todas as consulta                    |
 | GET    | /api/appointment/{id}             | Busca uma consulta pelo ID                 |
-| PUT    | /api/appointment                  | Atualiza todos os dados de uma consulta    |
+| PUT    | /api/appointment/{id}             | Atualiza todos os dados de uma consulta    |
 | DELETE | /api/appointment/{id}             | Remove uma consulta                        |
 
 ## Gerenciamento (/department)
@@ -79,7 +79,7 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 | POST   | /api/department                  | Cria um novo departamento                     |
 | GET    | /api/department                  | Lista todos os departamentos                  |
 | GET    | /api/department/{id}             | Busca um departamento pelo ID                 |
-| PUT    | /api/department                  | Atualiza todos os dados de um departamento    |
+| PUT    | /api/department/{id}             | Atualiza todos os dados de um departamento    |
 | DELETE | /api/department/{id}             | Remove um departamento                        |
 
 ## Gerenciamento (/doctor)
@@ -89,7 +89,7 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 | POST   | /api/doctor                  | Cria um novo doutor                     |
 | GET    | /api/doctor                  | Lista todos os doutores                 |
 | GET    | /api/doctor/{id}             | Busca um doutor pelo ID                 |
-| PUT    | /api/doctor                  | Atualiza todos os dados de um doutor    |
+| PUT    | /api/doctor/{id}             | Atualiza todos os dados de um doutor    |
 | DELETE | /api/doctor/{id}             | Remove um doutor                        |
 
 ## Acesse a aplicação usando o POSTMAN
