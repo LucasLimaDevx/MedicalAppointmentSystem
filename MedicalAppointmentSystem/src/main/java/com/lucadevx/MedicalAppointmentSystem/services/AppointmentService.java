@@ -97,12 +97,7 @@ public class AppointmentService {
 		
 		Department departmentCurrent = departmentRepository.findById(appointmentRequestDTO.departmentId())
 				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
-		/*
-		 *  
-		 * TRUE   ||  FALSE = true           !(TRUE  || FALSE) = FALSE 
-		 * FALSE  ||  TRUE = true            !(FALSE || TRUE ) = FALSE 
-		 * FALSE  ||  FALSE FALSE            !(FALSE || FALSE) = TRUE 
-		 * */
+		
 		if(!(isAppointmentAvailable(appointmentRequestDTO.appointmentDateTime()) ||
 				appointmentCurrent.getAppointmentDateTime().equals(appointmentCurrent.getAppointmentDateTime())) ) {
 			
