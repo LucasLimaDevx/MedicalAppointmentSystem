@@ -30,7 +30,7 @@ public class HandlerException {
 	}
 	
 	@ExceptionHandler(AppointmentNotAvailableException.class)
-	public ResponseEntity<ExceptionResponse> objectNotFound(AppointmentNotAvailableException exception , WebRequest request){
+	public ResponseEntity<ExceptionResponse> appointmentNotAvailableException(AppointmentNotAvailableException exception , WebRequest request){
 		ExceptionResponse response = new ExceptionResponse(LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
 		
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
