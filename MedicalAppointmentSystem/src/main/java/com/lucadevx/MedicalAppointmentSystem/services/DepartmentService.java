@@ -120,16 +120,9 @@ public class DepartmentService {
 		Set<AppointmentResponseDTO> appointmentsDTO = new HashSet<>();
 		
 		for(Appointment appointment : department.getAppointments()) {
-			/*logger.debug("Parsing department object to DepartmentResponseDTO.");
-			PatientResponseDTO patientResponseDTO = new PatientResponseDTO(
-					appointment.getPatient().getId(),
-					appointment.getPatient().getFirstName(),
-					appointment.getPatient().getLastName(),
-					appointment.getPatient().getEmail(),
-					appointment.getPatient().getPhone(),
-					appointment.getPatient().getBirthDate().format(formatter_local_date));
-			*/
+
 			PatientResponseDTO patientResponseDTO = PatientService.parseToDTO(appointment.getPatient());
+			
 			appointmentsDTO.add(
 					new AppointmentResponseDTO(
 						appointment.getId(),
