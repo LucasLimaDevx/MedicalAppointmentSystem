@@ -3,6 +3,8 @@ package com.lucadevx.MedicalAppointmentSystem.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,50 +29,70 @@ public class DoctorController {
 	
 	@Autowired
 	private DoctorService services;
+	private final static Logger logger = LoggerFactory.getLogger(DoctorController.class.getName());
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DoctorResponseDTO> create(@RequestBody DoctorRequestDTO doctorRequestDTO) {
+		logger.info("Initialize create controller method.");
 		
 		DoctorResponseDTO doctorResponseDTO = services.create(doctorRequestDTO);
+		
+		logger.info("Finishing create controller method.");
 		return new ResponseEntity<>(doctorResponseDTO, HttpStatus.CREATED);
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DoctorResponseDTO> findById(@PathVariable Long id) {
+		logger.info("Initialize findById controller method.");
+		logger.debug("Validating identifier.");
+		
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 		
 		DoctorResponseDTO doctorResponseDTO = services.findById(id);
 		
+		logger.info("Finishing findById controller method.");
 		return ResponseEntity.ok(doctorResponseDTO);
 		
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<DoctorResponseDTO>> findAll(){
+		logger.info("Initialize findAll controller method.");
 		
 		List<DoctorResponseDTO> doctorResponseDTOs = services.findAll();
+	
+		logger.info("Finishing findAll controller method.");
 		return ResponseEntity.ok(doctorResponseDTOs);
 	}
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DoctorResponseDTO> update(@RequestBody DoctorRequestDTO doctorRequestDTO, @PathVariable Long id) {
+		logger.info("Initialize update controller method.");
+		logger.debug("Validating identifier.");
+		
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
+		
 		DoctorResponseDTO doctorUpdateResponseDTO = services.update(doctorRequestDTO, id);
+		
+		logger.info("Finishing update controller method.");
 		return ResponseEntity.ok(doctorUpdateResponseDTO);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		logger.info("Initialize delete controller method.");
+		logger.debug("Validating identifier.");
 		if(id <= 0) {
 			throw new IllegalArgumentException("Invalid id");
 		}
 		
 		services.delete(id);
 		
+		logger.info("Finishing delete controller method.");
 		return ResponseEntity.noContent().build();
 		
 	}
