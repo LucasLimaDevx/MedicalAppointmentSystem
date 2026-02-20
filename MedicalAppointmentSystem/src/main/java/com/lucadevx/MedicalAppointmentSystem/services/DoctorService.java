@@ -36,7 +36,7 @@ public class DoctorService {
 		
 		logger.debug("Fetching department by Id from database.");
 		Department department = departmentRepository.findById(doctorRequestDTO.departmentId())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object department not found"));
 		
 		logger.debug("Setting up department on doctor object.");
 		doctor.setDepartment(department);
@@ -81,11 +81,11 @@ public class DoctorService {
 		
 		logger.debug("Fetching doctor by Id from database.");
 		Doctor doctorRepository = repository.findById(id)
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object doctor not found"));
 		
 		logger.debug("Fetching department by Id from database.");
 		Department department = departmentRepository.findById(doctorRequestDTO.departmentId())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object department not found"));
 		
 		logger.info("Updating doctor object.");
 		doctorRepository.setFirstName(doctorRequestDTO.firstName());
@@ -108,7 +108,7 @@ public class DoctorService {
 		logger.info("Starting the service's delete method.");
 		logger.debug("Fetching doctor by Id from database.");
 		Doctor doctor = repository.findById(id)
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object doctor not found"));
 		
 		logger.debug("Checking if the appointment list is empty.");
 		if(!doctor.getAppointments().isEmpty()) {

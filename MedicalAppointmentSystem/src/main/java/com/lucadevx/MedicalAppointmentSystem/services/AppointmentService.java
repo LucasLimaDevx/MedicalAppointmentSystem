@@ -57,15 +57,15 @@ public class AppointmentService {
 		
 		logger.debug("Fetching patient by Id from database.");
 		Patient patientCurrent = patientRepository.findById(appointmentRequestDTO.patientId())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object patient not found"));
 		
 		logger.debug("Fetching doctor by Id from database.");
 		Doctor doctorCurrent = doctorRepository.findById(appointmentRequestDTO.doctorId())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object doctor not found"));
 		
 		logger.debug("Fetching department by Id from database.");
 		Department departmentCurrent = departmentRepository.findById(appointmentRequestDTO.departmentId())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object department not found"));
 		
 		logger.info("Setting up data.");
 		appointment.setDepartment(departmentCurrent);
@@ -83,7 +83,7 @@ public class AppointmentService {
 		logger.info("Starting the service's findById method.");
 		
 		AppointmentResponseDTO appointmentResponseDTO =  parseToDTO(repository.findById(id)
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found")));
+				.orElseThrow(()-> new ObjectNotFoundException("Object appointment not found")));
 		
 		logger.info("Returning appointmentResponseDTO.");
 		return appointmentResponseDTO;
@@ -110,19 +110,19 @@ public class AppointmentService {
 		
 		logger.debug("Fetching appointment by Id from database.");
 		Appointment appointmentCurrent = repository.findById(id)
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object appointment not found"));
 		
 		logger.debug("Fetching patient by Id from database.");
 		Patient patientCurrent = patientRepository.findById(appointmentRequestDTO.patientId())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object patient not found"));
 		
 		logger.debug("Fetching doctor by Id from database.");
 		Doctor doctorCurrent = doctorRepository.findById(appointmentRequestDTO.doctorId())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object doctor not found"));
 		
 		logger.debug("Fetching department by Id from database.");
 		Department departmentCurrent = departmentRepository.findById(appointmentRequestDTO.departmentId())
-				.orElseThrow(()-> new ObjectNotFoundException("Object not found"));
+				.orElseThrow(()-> new ObjectNotFoundException("Object department not found"));
 		
 		if(!(isAppointmentAvailable(appointmentRequestDTO.appointmentDateTime()) ||
 				appointmentCurrent.getAppointmentDateTime().equals(appointmentCurrent.getAppointmentDateTime())) ) {
