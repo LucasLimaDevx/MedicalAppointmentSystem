@@ -18,3 +18,8 @@ spring:
 logging:
    level: 
      com.lucadevx.MedicalAppointmentSystem: DEBUG
+springdoc:
+  paths-to-match:
+    /api/**/**
+  swagger-ui:
+    use-root-path: true

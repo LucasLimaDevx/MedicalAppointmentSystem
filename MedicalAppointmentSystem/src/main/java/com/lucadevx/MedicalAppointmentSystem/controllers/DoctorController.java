@@ -22,16 +22,42 @@ import com.lucadevx.MedicalAppointmentSystem.dto.request.DoctorRequestDTO;
 import com.lucadevx.MedicalAppointmentSystem.dto.response.DoctorResponseDTO;
 import com.lucadevx.MedicalAppointmentSystem.services.DoctorService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
 @RequestMapping("/api/doctor")
+@Tag(name = "Doctor", description = "Endpoints for managing Doctor")
 public class DoctorController {
 	
 	@Autowired
 	private DoctorService services;
 	private final static Logger logger = LoggerFactory.getLogger(DoctorController.class.getName());
 	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "Create a Doctor.",
+			description = "To create a Doctor object, the departmentId field must be greater than 0.",
+			tags = {"Doctor"},
+			responses = {
+					@ApiResponse(
+							responseCode = "201", 
+							content = @Content(schema = @Schema(implementation = DoctorResponseDTO.class))),
+					@ApiResponse(responseCode = "204", content = @Content),
+					@ApiResponse(responseCode = "400", content = @Content),
+					@ApiResponse(responseCode = "401", content = @Content),
+					@ApiResponse(responseCode = "404", content = @Content),
+					@ApiResponse(responseCode = "500", content = @Content)
+			}
+			
+	)
 	public ResponseEntity<DoctorResponseDTO> create(@RequestBody DoctorRequestDTO doctorRequestDTO) {
 		logger.info("Initialize create controller method.");
 		
@@ -42,6 +68,22 @@ public class DoctorController {
 	}
 	
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "Finds a Doctor.",
+			description = "Find a Doctor specific by Id.",
+			tags = {"Doctor"},
+			responses = {
+					@ApiResponse(
+							responseCode = "200", 
+							content = @Content(schema = @Schema(implementation = DoctorResponseDTO.class))),
+					@ApiResponse(responseCode = "204", content = @Content),
+					@ApiResponse(responseCode = "400", content = @Content),
+					@ApiResponse(responseCode = "401", content = @Content),
+					@ApiResponse(responseCode = "404", content = @Content),
+					@ApiResponse(responseCode = "500", content = @Content)
+			}
+			
+	)
 	public ResponseEntity<DoctorResponseDTO> findById(@PathVariable Long id) {
 		logger.info("Initialize findById controller method.");
 		logger.debug("Validating identifier.");
@@ -58,6 +100,28 @@ public class DoctorController {
 	}
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "Find All Doctor.",
+			description = "Finds All Doctor.",
+			tags = {"Doctor"},
+			responses = {
+					@ApiResponse(
+							
+							responseCode = "200", 
+							content = @Content(
+									mediaType = MediaType.APPLICATION_JSON_VALUE,
+									array = @ArraySchema(schema = @Schema(implementation = DoctorResponseDTO.class))
+							)
+							
+					),
+					@ApiResponse(responseCode = "204", content = @Content),
+					@ApiResponse(responseCode = "400", content = @Content),
+					@ApiResponse(responseCode = "401", content = @Content),
+					@ApiResponse(responseCode = "404", content = @Content),
+					@ApiResponse(responseCode = "500", content = @Content)
+			}
+			
+	)
 	public ResponseEntity<List<DoctorResponseDTO>> findAll(){
 		logger.info("Initialize findAll controller method.");
 		
@@ -67,7 +131,26 @@ public class DoctorController {
 		return ResponseEntity.ok(doctorResponseDTOs);
 	}
 	
-	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(
+			value = "/{id}",
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "Update a Doctor.",
+			description = "To update a Doctor object, the id and departmentId fields must be greater than 0.",
+			tags = {"Doctor"},
+			responses = {
+					@ApiResponse(
+							responseCode = "200", 
+							content = @Content(schema = @Schema(implementation = DoctorResponseDTO.class))),
+					@ApiResponse(responseCode = "204", content = @Content),
+					@ApiResponse(responseCode = "400", content = @Content),
+					@ApiResponse(responseCode = "401", content = @Content),
+					@ApiResponse(responseCode = "404", content = @Content),
+					@ApiResponse(responseCode = "500", content = @Content)
+			}
+			
+	)
 	public ResponseEntity<DoctorResponseDTO> update(@RequestBody DoctorRequestDTO doctorRequestDTO, @PathVariable Long id) {
 		logger.info("Initialize update controller method.");
 		logger.debug("Validating identifier.");
@@ -83,6 +166,19 @@ public class DoctorController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@Operation(
+			summary = "Delete a Doctor.",
+			description = "Delete a specific Doctor by their id.",
+			tags = {"Doctor"},
+			responses = {
+					@ApiResponse(responseCode = "204", content = @Content),
+					@ApiResponse(responseCode = "400", content = @Content),
+					@ApiResponse(responseCode = "401", content = @Content),
+					@ApiResponse(responseCode = "404", content = @Content),
+					@ApiResponse(responseCode = "500", content = @Content)
+			}
+			
+	)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		logger.info("Initialize delete controller method.");
 		logger.debug("Validating identifier.");
