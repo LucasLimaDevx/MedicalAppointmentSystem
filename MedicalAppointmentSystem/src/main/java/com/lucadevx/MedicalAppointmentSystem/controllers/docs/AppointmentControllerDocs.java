@@ -79,7 +79,7 @@ public interface AppointmentControllerDocs {
 
 	@Operation(
 			summary = "Update a Appointment.",
-			description = "To update a Appointment id, object, the patientId, departmentId and doctorId fields must be greater than 0."
+			description = "To update a Appointment object id, the patientId, departmentId and doctorId fields must be greater than 0."
 					+ " The status field only accepts the values ​​AGENDADO, REALIZADO, CANCELADO, and ADIADO.",
 			tags = {"Appointment"},
 			responses = {
