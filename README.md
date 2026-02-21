@@ -5,7 +5,7 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 ## Tecnologias usadas:
 - Java 21
 - Spring Web
-- Spring Data JPA / Hibernet
+- Spring Data JPA / Hibernate
 - MySQL
 - Maven para gerenciamento de dependências
 - Swagger (OpenAPI)
