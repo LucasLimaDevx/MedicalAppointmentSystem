@@ -92,10 +92,11 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 | PUT    | /api/doctor/{id}             | Atualiza todos os dados de um doutor    |
 | DELETE | /api/doctor/{id}             | Remove um doutor                        |
 
-## Acesse a aplicação usando o POSTMAN ou o Swagger UI
+## Acesse a aplicação usando o POSTMAN
 
 Aplicação estará disponível em: http//:localhost:8080
 
+## Acesse a aplicação usando o Swagger UI pelo navegador
 Aplicação estará disponível em: http//:localhost:8080/swagger-ui/index.html
 
 ## Autor
