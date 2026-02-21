@@ -1,6 +1,6 @@
 # MedicalAppointmentSystem
 
-Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto permite o agendamento de consultas de usuarios com seus respectivos médicos e departamento, podendo definir o estado da consulta como agendado, cancelado ou realizado.
+Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto permite o agendamento de consultas de usuarios com seus respectivos médicos e departamento, podendo definir o estado da consulta como agendado, cancelado, adiado ou realizado.
 
 ## Tecnologias usadas:
 - Java 21
@@ -96,6 +96,10 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 ## Acesse a aplicação usando o POSTMAN
 
 Aplicação estará disponível em http//:localhost:8080
+
+## Acesse a aplicação usando o Swagger UI
+
+Aplicação estará disponível em http//:localhost:8080/swagger-ui/index.html
 
 ## Autor
 
