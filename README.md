@@ -9,6 +9,7 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 - Spring Data JPA / Hibernet
 - MySQL
 - Maven
+- Swagger (OpenAPI)
 
 ## Funcionalidades
 - CRUD de pacientes, consultas, departamentos e doutores
