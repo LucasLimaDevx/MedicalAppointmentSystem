@@ -96,7 +96,7 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 
 Aplicação estará disponível em: http//:localhost:8080
 
-## Acesse a aplicação usando o Swagger UI pelo navegador
+## Acesse a aplicação usando o Swagger UI no navegador
 Aplicação estará disponível em: http//:localhost:8080/swagger-ui/index.html
 
 ## Autor
