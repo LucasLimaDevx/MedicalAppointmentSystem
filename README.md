@@ -4,11 +4,10 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 
 ## Tecnologias usadas:
 - Java 21
-- Spring boot
 - Spring Web
 - Spring Data JPA / Hibernet
 - MySQL
-- Maven
+- Maven para gerenciamento de dependências
 - Swagger (OpenAPI)
 
 ## Funcionalidades
@@ -93,13 +92,10 @@ Sistema de agendamentos de consultas com Springboot, JPA e MySQL. Este projeto p
 | PUT    | /api/doctor/{id}             | Atualiza todos os dados de um doutor    |
 | DELETE | /api/doctor/{id}             | Remove um doutor                        |
 
-## Acesse a aplicação usando o POSTMAN
+## Acesse a aplicação usando o POSTMAN ou o Swagger UI
 
-Aplicação estará disponível em http//:localhost:8080
-
-## Acesse a aplicação usando o Swagger UI
-
-Aplicação estará disponível em http//:localhost:8080/swagger-ui/index.html
+Aplicação estará disponível em: http//:localhost:8080
+Aplicação estará disponível em> http//:localhost:8080/swagger-ui/index.html
 
 ## Autor
 
